@@ -1,0 +1,174 @@
+/* ================= МОИ ВИДЕО ================= */
+
+.my-videos-page {
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ===== Header ===== */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.page-header h4 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* ===== SORT DROPDOWN (CUSTOM, NO BOOTSTRAP) ===== */
+
+.sort-dropdown {
+    position: relative;
+}
+
+/* Кнопка */
+.sort-btn {
+    padding: 8px 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+
+    background: var(--bg-glass);
+    color: var(--text-primary);
+
+    border: 1px solid var(--border);
+    border-radius: 40px;
+
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+}
+
+/* Меню (ПО УМОЛЧАНИЮ СКРЫТО) */
+.sort-menu {
+    display: none;                 /* 🔥 ВАЖНО */
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+
+    list-style: none;
+    margin: 0;
+    padding: 8px;
+
+    min-width: 180px;
+
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+
+    z-index: 100;
+}
+
+/* Когда открыто */
+.sort-dropdown.open .sort-menu {
+    display: block;
+}
+
+/* Пункты */
+.sort-menu li {
+    margin: 0;
+    padding: 0;
+}
+
+.sort-menu a {
+    display: block;
+    padding: 8px 16px;
+
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    text-decoration: none;
+
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.sort-menu a:hover {
+    background: var(--hover-bg);
+}
+
+.sort-menu a.active {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ===== Video grid empty state ===== */
+.no-videos {
+    grid-column: 1 / -1;
+    padding: 60px 20px;
+    text-align: center;
+
+    font-size: 1rem;
+    color: var(--text-secondary);
+
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+
+    border: 1px solid var(--border);
+    border-radius: 24px;
+}
+
+.no-videos a {
+    color: var(--accent);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.no-videos a:hover {
+    text-decoration: underline;
+}
+
+/* ===== Edit button ===== */
+.edit-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 50%;
+    color: var(--text-secondary);
+    text-decoration: none;
+
+    transition: background 0.2s, color 0.2s;
+}
+
+.edit-link:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
+.edit-link svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+    fill: currentColor;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .my-videos-page {
+        padding: 0 12px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .my-videos-page {
+        padding: 0 8px;
+    }
+}

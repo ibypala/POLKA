@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ video.title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/video-layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/video-player.css' %}">
+    <link rel="stylesheet" href="{% static 'css/video-info.css' %}">
+    <link rel="stylesheet" href="{% static 'css/video-description.css' %}">
+    <link rel="stylesheet" href="{% static 'css/comments.css' %}">
+    <link rel="stylesheet" href="{% static 'css/recommendations.css' %}">
+    <link rel="stylesheet" href="{% static 'css/loading.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-page">
+    <div class="video-main">
+        <!-- Видео плеер -->
+        <div class="video-player-container mb-3" id="videoPlayerContainer">
+            <video id="video" class="video-element" poster="{% if video.thumbnail %}{{ video.thumbnail.url }}{% endif %}">
+                <source src="{{ video.video_file.url }}" type="video/mp4">
+                Ваш браузер не поддерживает тег video.
+            </video>
+            
+            <!-- Кастомные контролы -->
+            <div class="video-controls" id="videoControls">
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-filled" id="progressFilled"></div>
+                        <div class="progress-handle" id="progressHandle"></div>
+                    </div>
+                </div>
+                
+                <div class="controls-wrapper">
+                    <div class="left-controls">
+                        <button class="control-button play-pause" id="playPauseBtn">
+                            <svg class="play-icon" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="currentColor" d="M8 5v14l11-7z"/>
+                            </svg>
+                            <svg class="pause-icon" viewBox="0 0 24 24" width="24" height="24" style="display: none;">
+                                <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                            </svg>
+                        </button>
+                        
+                        <div class="volume-control">
+                            <button class="control-button mute-toggle" id="muteBtn">
+                                <svg class="volume-high-icon" viewBox="0 0 24 24" width="22" height="22">
+                                    <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3z M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                                </svg>
+                                <svg class="volume-mute-icon" viewBox="0 0 24 24" width="22" height="22" style="display: none;">
+                                    <path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                                </svg>
+                            </button>
+                            <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.05" value="1">
+                        </div>
+                        
+                        <div class="time-display">
+                            <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="right-controls">
+                        <div class="speed-control">
+                            <button class="control-button speed-btn" id="speedBtn">1x</button>
+                            <div class="speed-menu hidden" id="speedMenu">
+                                <div class="speed-option" data-speed="0.5">0.5x</div>
+                                <div class="speed-option" data-speed="0.75">0.75x</div>
+                                <div class="speed-option active" data-speed="1">1x</div>
+                                <div class="speed-option" data-speed="1.25">1.25x</div>
+                                <div class="speed-option" data-speed="1.5">1.5x</div>
+                                <div class="speed-option" data-speed="2">2x</div>
+                            </div>
+                        </div>
+                        
+                        <button class="control-button fullscreen" id="fullscreenBtn">
+                            <svg class="fullscreen-icon" viewBox="0 0 24 24" width="22" height="22">
+                                <path fill="currentColor" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                            </svg>
+                            <svg class="fullscreen-exit-icon" viewBox="0 0 24 24" width="22" height="22" style="display: none;">
+                                <path fill="currentColor" d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Блок под видео -->
+        <div class="video-info-block">
+            <!-- Заголовок видео -->
+            <h1 class="video-title">{{ video.title }}</h1>
+            
+            <!-- Строка с автором и действиями -->
+            <div class="video-actions-row">
+                <div class="author-info">
+                    <a href="{% url 'profile' video.uploaded_by.username %}" class="author-avatar-link">
+                        <div class="author-avatar">
+                            {% if video.uploaded_by.profile.avatar %}
+                                <img src="{{ video.uploaded_by.profile.avatar.url }}" alt="">
+                            {% else %}
+                                <div class="default-avatar">{{ video.uploaded_by.username|first|upper }}</div>
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="author-details">
+                        <a href="{% url 'profile' video.uploaded_by.username %}" class="author-name-link">
+                            <div class="author-name">{{ video.uploaded_by.username }}</div>
+                        </a>
+                        <div class="author-stats">Подписчиков: 0</div>
+                    </div>
+                </div>
+                
+                <div class="video-actions">
+                    <!-- Лайк/дизлайк блок -->
+                    <div class="like-dislike-block">
+                        {% if user.is_authenticated %}
+                            <button class="like-button {% if user_liked %}liked{% endif %}" data-video-id="{{ video.pk }}" data-action="like">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                                </svg>
+                                <span class="like-count">{{ video.likes.count }}</span>
+                            </button>
+                            <button class="dislike-button {% if user_disliked %}disliked{% endif %}" data-video-id="{{ video.pk }}" data-action="dislike">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/>
+                                </svg>
+                                <span class="dislike-count">{{ video.dislikes.count }}</span>
+                            </button>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="like-button">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                                </svg>
+                                <span class="like-count">{{ video.likes.count }}</span>
+                            </a>
+                            <a href="{% url 'login' %}" class="dislike-button">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="currentColor" d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/>
+                                </svg>
+                                <span class="dislike-count">{{ video.dislikes.count }}</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- БЛОК ОПИСАНИЯ -->
+            {% if video.description %}
+            <div class="description-block" id="descriptionBlock">
+                <div class="description-header">
+                    <div class="description-meta">
+                        <span class="description-views">
+                            <i class="fas fa-eye"></i> {{ video.views_count }} просмотров
+                        </span>
+                        <span class="description-date-short" id="shortDate">
+                            <i class="fas fa-clock"></i> {{ video.uploaded_at|timesince }} назад
+                        </span>
+                        <span class="description-date-full hidden" id="fullDate">
+                            <i class="fas fa-calendar-alt"></i> {{ video.uploaded_at|date:"d F Y" }}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="description-content" id="descriptionContent">
+                    <div class="description-text" id="descriptionText">
+                        {{ video.description|linebreaks }}
+                    </div>
+                </div>
+                
+                <!-- Кнопка СВЕРНУТЬ -->
+                <div class="description-footer hidden" id="descriptionFooter" onclick="collapseDescription()">
+                    <span>Свернуть <i class="fas fa-chevron-up"></i></span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- БЛОК КОММЕНТАРИЕВ -->
+        <div class="comments-section">
+            <h3 class="comments-title">
+                Комментарии <span class="comments-count">{{ video.comments.count }}</span>
+            </h3>
+            
+            <!-- Форма добавления комментария -->
+            {% if user.is_authenticated %}
+                <div class="add-comment">
+                    <div class="comment-avatar">
+                        {% if user.profile.avatar %}
+                            <img src="{{ user.profile.avatar.url }}" alt="">
+                        {% else %}
+                            <div class="default-avatar">{{ user.username|first|upper }}</div>
+                        {% endif %}
+                    </div>
+                    <form class="comment-form" data-video-id="{{ video.pk }}" id="commentForm">
+                        {% csrf_token %}
+                        {{ comment_form.text }}
+                        <button type="submit" class="btn-submit" id="commentSubmitBtn" disabled>Отправить</button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="login-to-comment">
+                    <a href="{% url 'login' %}">Войдите</a> чтобы оставить комментарий
+                </div>
+            {% endif %}
+            
+            <!-- Список комментариев -->
+            <div class="comments-list" id="comments-list">
+                {% for comment in comments %}
+                    {% include 'videos/comment_item.html' with comment=comment %}
+                {% empty %}
+                    <p class="no-comments">Нет комментариев. Будьте первым!</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Рекомендации -->
+    <div class="video-sidebar">
+        <h5 class="sidebar-title">Рекомендации</h5>
+        
+        <div class="recommendations-list" id="recommendations-list" 
+             data-exclude="{{ video.pk }}" data-next-page="2">
+            {% for similar in similar_videos %}
+                {% include 'videos/recommendation_item.html' with video=similar %}
+            {% endfor %}
+        </div>
+        
+        <div class="loading-spinner" id="loading-spinner" style="display: none;">
+            <div class="spinner"></div>
+            <span>Загрузка...</span>
+        </div>
+        
+        <div class="no-more-recommendations" id="no-more-recommendations" style="display: none;">
+            Больше нет рекомендаций
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/video-player.js' %}"></script>
+    <script src="{% static 'js/video-description.js' %}"></script>
+    <script src="{% static 'js/video-recommendations.js' %}"></script>
+    <script src="{% static 'js/video-interactions.js' %}"></script>
+    <script src="{% static 'js/comments.js' %}"></script>
+{% endblock %}

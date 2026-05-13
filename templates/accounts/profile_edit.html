@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/profile-edit.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="edit-profile-page">
+    <h1 class="edit-title">Редактирование профиля</h1>
+    
+    <form method="post" enctype="multipart/form-data" class="edit-form" id="profileForm">
+        {% csrf_token %}
+        
+        <div class="form-sections">           
+            <!-- Аватар с предпросмотром -->
+            <div class="form-section">
+                <h2 class="section-title">Аватар</h2>
+                
+                <div class="image-upload-container">
+                    <div class="current-image">
+                        {% if user.profile.avatar %}
+                            <img src="{{ user.profile.avatar.url }}?v={{ user.profile.updated_at|date:'U' }}" 
+                                 id="avatarPreview" 
+                                 class="avatar-preview">
+                        {% else %}
+                            <div class="avatar-preview default" id="avatarPreview">
+                                <span>{{ user.username|first|upper }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="image-controls">
+                        <label class="btn-outline-primary">
+                            Выбрать изображение
+                            <input type="file" 
+                                   id="avatarInput" 
+                                   name="avatar" 
+                                   accept=".jpg,.jpeg,.png" 
+                                   style="display: none;">
+                        </label>
+                        <p class="help-text">Форматы: JPG, PNG. Максимум 5MB. Рекомендуемый размер: 400x400px</p>
+                    </div>
+                    
+                    <!-- Модальное окно для обрезки аватара -->
+                    <div class="modal" id="avatarModal">
+                        <div class="modal-content">
+                            <h3>Обрежьте аватар</h3>
+                            <div class="cropper-container">
+                                <img id="avatarCropper" style="max-width: 100%;">
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-save" id="cropAvatarBtn">Применить</button>
+                                <button type="button" class="btn-cancel" id="cancelAvatarBtn">Отмена</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Баннер с предпросмотром -->
+            <div class="form-section">
+                <h2 class="section-title">Баннер профиля</h2>
+                
+                <div class="image-upload-container">
+                    <div class="current-image">
+                        {% if user.profile.banner %}
+                            <img src="{{ user.profile.banner.url }}?v={{ user.profile.updated_at|date:'U' }}" 
+                                 id="bannerPreview" 
+                                 class="banner-preview">
+                        {% else %}
+                            <div class="banner-preview default" id="bannerPreview">
+                                Баннер не загружен
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="image-controls">
+                        <label class="btn-outline-primary">
+                            Выбрать изображение
+                            <input type="file" 
+                                   id="bannerInput" 
+                                   name="banner" 
+                                   accept=".jpg,.jpeg,.png" 
+                                   style="display: none;">
+                        </label>
+                        <p class="help-text">Форматы: JPG, PNG. Максимум 10MB. Рекомендуемый размер: 1200x200px</p>
+                    </div>
+                    
+                    <!-- Модальное окно для обрезки баннера -->
+                    <div class="modal" id="bannerModal">
+                        <div class="modal-content">
+                            <h3>Обрежьте баннер</h3>
+                            <div class="cropper-container">
+                                <img id="bannerCropper" style="max-width: 100%;">
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="btn-save" id="cropBannerBtn">Применить</button>
+                                <button type="button" class="btn-cancel" id="cancelBannerBtn">Отмена</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- О себе -->
+            <div class="form-section">
+                <h2 class="section-title">О себе</h2>
+                
+                <div class="form-group">
+                    <label>О себе</label>
+                    {{ profile_form.bio }}
+                    <small class="help-text">Необязательно. Максимум 500 символов.</small>
+                    <div class="char-counter" id="bio-counter">0/500</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Местоположение</label>
+                    {{ profile_form.location }}
+                </div>
+                
+                <div class="form-group">
+                    <label>Дата рождения</label>
+                    {{ profile_form.birth_date }}
+                </div>
+                
+                <div class="form-group">
+                    <label>Личный сайт</label>
+                    {{ profile_form.website }}
+                </div>
+            </div>
+            
+            <!-- Социальные сети -->
+            <div class="form-section">
+                <h2 class="section-title">🔗 Социальные сети</h2>
+                
+                <div class="form-group">
+                    <label>Telegram</label>
+                    {{ profile_form.telegram }}
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-save">Сохранить изменения</button>
+            <a href="{% url 'profile' user.username %}" class="btn-cancel">← Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/profile-edit.js' %}"></script>
+{% endblock %}

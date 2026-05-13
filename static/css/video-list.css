@@ -1,0 +1,221 @@
+/* ========== ГЛАВНАЯ СТРАНИЦА ========== */
+
+.home-page {
+    margin: 0 auto;
+    padding: 16px 12px; /* Уменьшил отступы */
+    width: 100%;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px; /* Уменьшил с 32px */
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.page-header h4 {
+    font-size: 1.6rem; /* Немного уменьшил */
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+/* ========== СОРТИРОВКА ========== */
+
+.sort-dropdown {
+    position: relative;
+}
+
+/* Полностью переопределяем кнопку */
+.sort-dropdown .btn {
+    all: unset;
+    padding: 8px 18px; /* Уменьшил паддинги */
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 30px; /* Немного уменьшил */
+    color: var(--text-primary);
+    font-size: 0.9rem; /* Уменьшил шрифт */
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 140px; /* Уменьшил */
+    justify-content: space-between;
+    box-sizing: border-box;
+    line-height: 1.4;
+}
+
+.sort-dropdown .btn:hover {
+    background: var(--bg-glass-light);
+    border-color: var(--accent);
+}
+
+.sort-dropdown .btn i {
+    font-size: 12px;
+    color: var(--text-secondary);
+    transition: transform 0.2s;
+}
+
+.sort-dropdown .btn[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}
+
+/* Полностью переопределяем дропдаун меню */
+.dropdown-menu {
+    all: unset;
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 6px 0;
+    min-width: 180px;
+    box-shadow: var(--shadow-glass);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    display: block;
+    box-sizing: border-box;
+}
+
+.dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Убираем все возможные маркеры и отступы */
+.dropdown-menu,
+.dropdown-menu ul,
+.dropdown-menu li {
+    list-style: none;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown-menu li {
+    display: block;
+    width: 100%;
+}
+
+.dropdown-menu li::before,
+.dropdown-menu li::after,
+.dropdown-menu li::marker {
+    display: none;
+    content: '';
+}
+
+/* Стили для пунктов меню */
+.dropdown-item {
+    all: unset;
+    display: block;
+    padding: 8px 16px; /* Уменьшил паддинги */
+    color: var(--text-primary);
+    font-size: 0.9rem; /* Уменьшил шрифт */
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+    transition: background 0.2s;
+    line-height: 1.4;
+    white-space: nowrap;
+    background: transparent;
+    border-radius: 8px;
+    margin: 2px 0;
+}
+
+.dropdown-item:hover {
+    background: var(--hover-bg);
+}
+
+.dropdown-item.active {
+    background: var(--accent);
+    color: white;
+}
+
+.dropdown-item.active:hover {
+    background: var(--accent-hover);
+}
+
+
+/* Пустое состояние */
+.no-videos {
+    grid-column: 1 / -1;
+    padding: 40px 20px;
+    text-align: center;
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.no-videos a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.no-videos a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .home-page {
+        padding: 12px 8px;
+    }
+    
+    .page-header h4 {
+        font-size: 1.3rem;
+    }
+    
+    .sort-dropdown .btn {
+        padding: 6px 14px;
+        min-width: 120px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-page {
+        padding: 8px 4px;
+    }
+    
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .sort-dropdown {
+        width: 100%;
+    }
+    
+    .sort-dropdown .btn {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .dropdown-menu {
+        width: 100%;
+        right: auto;
+        left: 0;
+    }
+}

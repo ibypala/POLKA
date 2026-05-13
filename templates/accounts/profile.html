@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/video-card.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-page">
+
+    <!-- BANNER -->
+
+    <div class="profile-banner">
+
+        {% if profile.banner %}
+
+            <img
+                src="{{ profile.banner.url }}?v={{ profile.updated_at|date:'U' }}"
+                alt="Баннер профиля">
+
+        {% else %}
+
+            <div class="banner-default"></div>
+
+        {% endif %}
+
+    </div>
+
+    <!-- PROFILE HEADER -->
+
+    <div class="profile-header">
+
+        <div class="profile-info">
+
+            <!-- AVATAR -->
+
+            <div class="profile-avatar">
+
+                {% if profile.avatar %}
+
+                    <img
+                        src="{{ profile.avatar.url }}?v={{ profile.updated_at|date:'U' }}"
+                        alt="{{ profile_user.username }}">
+
+                {% else %}
+
+                    <div class="avatar-placeholder">
+                        {{ profile_user.username|first|upper }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            <!-- DISPLAY NAME -->
+
+            <h1>
+
+                {% if profile_user.first_name or profile_user.last_name %}
+
+                    {{ profile_user.first_name }} {{ profile_user.last_name }}
+
+                {% else %}
+
+                    {{ profile_user.username }}
+
+                {% endif %}
+
+            </h1>
+
+            <!-- USERNAME ONLY FOR OWNER -->
+
+            {% if is_owner %}
+
+                <div class="profile-username">
+                    @{{ profile_user.username }}
+                </div>
+
+            {% endif %}
+
+            <!-- STATS -->
+
+            <div class="profile-stats">
+
+                {% if profile.show_views %}
+                    <span>
+                        <b>{{ total_views }}</b> просмотров
+                    </span>
+                {% endif %}
+
+                <span>
+                    <b>{{ profile.videos_count }}</b> видео
+                </span>
+
+                {% if profile.show_subscribers %}
+                    <span>
+                        <b>{{ total_subscribers }}</b> подписчиков
+                    </span>
+                {% endif %}
+
+                <span>
+                    с <b>{{ profile_user.date_joined|date:"d.m.Y" }}</b>
+                </span>
+
+            </div>
+
+            <!-- EDIT BUTTON -->
+
+            {% if is_owner %}
+
+            <div class="profile-edit-button">
+
+                <a
+                    href="{% url 'profile_edit' %}"
+                    class="btn-edit">
+
+                    <i class="fas fa-cog"></i>
+
+                    Редактировать профиль
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+            <!-- BIO -->
+
+            {% if profile.bio %}
+
+            <div
+                class="bio-trigger"
+
+                data-username="{{ profile_user.username }}"
+                data-bio="{{ profile.bio|escapejs }}"
+                data-location="{{ profile.location|escapejs }}"
+                data-website="{{ profile.website|escapejs }}"
+                data-youtube="{{ profile.youtube|escapejs }}"
+                data-telegram="{{ profile.telegram|escapejs }}"
+                data-views="{{ total_views }}"
+                data-videos="{{ profile.videos_count }}"
+                data-subscribers="{{ total_subscribers }}"
+                data-date="{{ profile_user.date_joined|date:'d.m.Y' }}">
+
+                {{ profile.bio|truncatechars:100 }}
+
+            </div>
+
+            {% endif %}
+
+            <!-- SUBSCRIBE BUTTON -->
+
+            {% if not is_owner %}
+
+            <div class="profile-actions">
+
+                <button
+                    class="btn btn-subscribe {% if is_subscribed %}on{% endif %}"
+                    data-username="{{ profile_user.username }}">
+
+                    <span class="text">
+
+                        {% if is_subscribed %}
+                            Отписаться
+                        {% else %}
+                            Подписаться
+                        {% endif %}
+
+                    </span>
+
+                    <span class="count">
+                        {{ total_subscribers }}
+                    </span>
+
+                </button>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- NAVIGATION -->
+
+    <nav class="profile-nav">
+
+        <a
+            href="{% url 'profile' profile_user.username %}"
+            class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+
+            Главная
+
+        </a>
+
+        <a
+            href="{% url 'profile_videos' profile_user.username %}"
+            class="{% if request.resolver_match.url_name == 'profile_videos' %}active{% endif %}">
+
+            Видео
+
+        </a>
+
+    </nav>
+
+    <!-- VIDEOS -->
+
+    <section class="profile-videos">
+
+        <h2>Последние видео</h2>
+
+        <div class="video-grid">
+
+            {% for video in videos %}
+
+                {% include 'videos/video_card.html' with video=video %}
+
+            {% empty %}
+
+                <div class="no-videos">
+                    <p>Видео пока нет</p>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
+<!-- BIO MODAL -->
+
+<div class="bio-modal" id="bioModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <b>Информация</b>
+
+            <span id="close">✕</span>
+
+        </div>
+
+        <div class="modal-content" id="modalContent"></div>
+
+    </div>
+
+</div>
+
+{% endblock %}

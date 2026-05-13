@@ -1,0 +1,83 @@
+/* ========== СТРУКТУРА СТРАНИЦЫ ВИДЕО ========== */
+
+.video-detail-page {
+    margin: 0 auto;
+    padding: 24px 20px; /* 20px слева и справа */
+    width: 100%;
+}
+
+.video-page {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+}
+
+.video-main {
+    flex: 1;
+    min-width: 0;
+    padding-left: 25px;
+}
+
+.video-sidebar {
+    width: 360px;
+    flex-shrink: 0;
+}
+
+/* Плеер */
+.video-player-container {
+    position: relative;
+    width: 100%;
+    background: #000;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin: 0;
+}
+
+/* Информация под видео */
+.video-info-block {
+    margin-top: 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+/* Комментарии */
+.comments-section {
+    margin-top: 24px;
+    width: 100%;
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .video-page {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .video-sidebar {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .video-detail-page {
+        padding: 16px 12px; /* 12px слева и справа */
+    }
+    
+    .video-info-block {
+        padding: 16px;
+    }
+    
+    .comments-section {
+        margin-top: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-detail-page {
+        padding: 12px 8px; /* 8px слева и справа */
+    }
+}

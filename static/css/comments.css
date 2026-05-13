@@ -1,0 +1,560 @@
+/* ========== КОММЕНТАРИИ ========== */
+
+.comments-section {
+    margin-top: 40px;
+    width: 100%;
+}
+
+.comments-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 20px 0;
+}
+
+.comments-count {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 400;
+    margin-left: 8px;
+}
+
+/* Форма комментария */
+.add-comment {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.comment-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--wood);
+    flex-shrink: 0;
+}
+
+.comment-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.default-avatar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+    background: var(--wood);
+}
+
+.comment-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    resize: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    line-height: 1.5;
+    min-height: 48px;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.comment-form .btn-submit {
+    align-self: flex-end;
+    padding: 8px 24px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: fit-content;
+}
+
+.comment-form .btn-submit:disabled {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.comment-form .btn-submit:not(:disabled):hover {
+    background: var(--accent-hover);
+}
+
+.login-to-comment {
+    padding: 16px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.login-to-comment a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-to-comment a:hover {
+    text-decoration: underline;
+}
+
+/* Список комментариев */
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+/* Элемент комментария */
+.comment-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+}
+
+.comment-author {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.comment-date {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.comment-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.comment-text p {
+    margin: 0 0 8px 0;
+}
+
+.comment-text p:last-child {
+    margin-bottom: 0;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.comment-actions button {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 20px;
+    transition: all 0.2s;
+}
+
+.comment-actions button:hover {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+}
+
+/* Ответы */
+.comment-replies {
+    margin-left: 40px;
+    margin-top: 12px;
+    border-left: 2px solid var(--border);
+    padding-left: 16px;
+}
+
+/* ===== ФОРМА ОТВЕТА ===== */
+.reply-form-container {
+    margin-top: 12px;
+    width: 100%;
+}
+
+.reply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.reply-form textarea {
+    width: 100%;
+    padding: 12px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    resize: vertical;
+    font-family: inherit;
+    min-height: 60px;
+}
+
+.reply-form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.reply-form-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.reply-form-actions .btn-submit {
+    padding: 8px 20px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.reply-form-actions .btn-submit:hover:not(:disabled) {
+    background: var(--accent-hover);
+}
+
+.reply-form-actions .btn-submit:disabled {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.reply-form-actions .btn-cancel {
+    padding: 8px 20px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.reply-form-actions .btn-cancel:hover {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+}
+
+/* Для мобильных */
+@media (max-width: 768px) { 
+    .reply-form-actions {
+        flex-direction: column;
+    }
+    
+    .reply-form-actions .btn-submit,
+    .reply-form-actions .btn-cancel {
+        width: 100%;
+    }
+}
+
+/* Пустое состояние */
+.no-comments {
+    padding: 40px 20px;
+    text-align: center;
+    background: var(--bg-primary);
+    border-radius: 20px;
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* ===== ССЫЛКИ НА ПРОФИЛЬ ===== */
+.comment-avatar-link {
+    text-decoration: none;
+    display: block;
+    flex-shrink: 0;
+}
+
+.comment-avatar-link:hover {
+    opacity: 1;
+}
+
+.comment-author-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.comment-author-link:hover {
+    color: inherit;
+}
+
+/* ================================================= */
+/* COMMENT BODY */
+/* ================================================= */
+
+.comment-body {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ================================================= */
+/* DELETE BUTTON */
+/* ================================================= */
+
+
+
+.delete-comment-btn:hover {
+    background: rgba(255, 69, 58, 0.12);
+
+    color: #ff453a !important;
+}
+
+/* ================================================= */
+/* DELETE MODAL */
+/* ================================================= */
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    backdrop-filter: blur(4px);
+
+    z-index: 99999;
+
+    animation: fadeIn 0.15s ease;
+}
+
+.delete-comment-modal {
+    width: 100%;
+    max-width: 420px;
+
+    padding: 28px;
+
+    background: var(--bg-secondary);
+
+    border: 1px solid var(--border);
+    border-radius: 28px;
+
+    box-shadow: var(--shadow);
+
+    animation: modalIn 0.18s ease;
+}
+
+.delete-comment-modal h3 {
+    margin: 0 0 12px;
+
+    color: var(--text-primary);
+
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.delete-comment-modal p {
+    margin: 0 0 10px;
+
+    color: var(--text-secondary);
+
+    line-height: 1.5;
+}
+
+.delete-comment-modal .danger-text {
+    color: #ff453a;
+
+    font-weight: 500;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 26px;
+}
+
+.modal-actions .btn-danger,
+.modal-actions .btn-cancel {
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 18px;
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.modal-actions .btn-danger {
+    background: #ff453a;
+
+    color: white;
+}
+
+.modal-actions .btn-danger:hover {
+    background: #e03d34;
+
+    transform: translateY(-1px);
+}
+
+.modal-actions .btn-cancel {
+    background: var(--hover-bg);
+
+    color: var(--text-primary);
+}
+
+.modal-actions .btn-cancel:hover {
+    opacity: 0.85;
+}
+
+/* ================================================= */
+/* ANIMATIONS */
+/* ================================================= */
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+@keyframes modalIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(10px)
+            scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+}
+
+/* ================================================= */
+/* MOBILE */
+/* ================================================= */
+
+@media (max-width: 480px) {
+
+    .delete-comment-modal {
+        padding: 22px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .modal-actions .btn-danger,
+    .modal-actions .btn-cancel {
+        width: 100%;
+    }
+
+}
+
+/* ================================================= */
+/* COMMENT ERROR */
+/* ================================================= */
+
+.comment-error-toast {
+    position: fixed;
+
+    left: 50%;
+    bottom: 24px;
+
+    transform: translateX(-50%) translateY(20px);
+
+    padding: 14px 18px;
+
+    background: rgba(255, 69, 58, 0.96);
+
+    color: white;
+
+    border-radius: 18px;
+
+    font-size: 0.95rem;
+    font-weight: 500;
+
+    box-shadow: var(--shadow);
+
+    opacity: 0;
+
+    z-index: 999999;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.comment-error-toast.show {
+    opacity: 1;
+
+    transform: translateX(-50%) translateY(0);
+}

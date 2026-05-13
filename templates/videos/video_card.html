@@ -1,0 +1,30 @@
+{% load static %}
+
+<div class="video-card">
+    <a href="{{ video.get_absolute_url }}" class="video-link">
+        <div class="thumbnail-wrapper">
+            {% if video.thumbnail %}
+                <img src="{{ video.thumbnail.url }}" 
+                     alt="{{ video.title }}" 
+                     class="thumbnail-img" 
+                     loading="lazy">
+            {% else %}
+                <div class="thumbnail-img no-thumbnail">
+                    <span>🎬</span>
+                </div>
+            {% endif %}
+            
+            {% if video.duration and video.duration > 0 %}
+                <span class="duration-badge">{{ video.duration_formatted }}</span>
+            {% endif %}
+        </div>
+        
+        <div class="video-info">
+            <h3 class="video-title">{{ video.title }}</h3>
+            <div class="video-meta">
+                <span class="video-author">{{ video.uploaded_by.username }}</span>
+                <span class="video-views">{{ video.views_count }} просмотров</span>
+            </div>
+        </div>
+    </a>
+</div>

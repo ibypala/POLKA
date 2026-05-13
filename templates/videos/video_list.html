@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/video-card.css' %}">
+    <link rel="stylesheet" href="{% static 'css/video-list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="home-page"> <!-- Добавляем свой класс-обертку -->
+    <div class="page-header">
+        <h4>Последние видео</h4>
+    </div>
+
+    <div class="video-grid">
+        {% for video in videos %}
+            {% include 'videos/video_card.html' with video=video %}
+        {% empty %}
+            <div class="no-videos">
+                <p>Пока нет видео. 
+                {% if user.is_authenticated %}
+                    <a href="{% url 'video_upload' %}">Загрузите</a> первое!
+                {% else %}
+                    <a href="{% url 'login' %}">Войдите</a> чтобы загрузить видео.
+                {% endif %}
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

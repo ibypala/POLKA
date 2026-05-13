@@ -1,0 +1,122 @@
+/* ========== ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ ========== */
+
+.delete-page {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.delete-card {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.delete-card .card-header {
+    padding: 20px;
+    border-bottom: none;
+    background: linear-gradient(135deg, #d32f2f, #b71c1c) !important;
+}
+
+.delete-card .card-header h3 {
+    margin: 0;
+    color: white;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.delete-card .card-body {
+    padding: 30px;
+    background: white;
+}
+
+.delete-message {
+    font-size: 1.2rem;
+    color: #030303;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.delete-message strong {
+    color: #d32f2f;
+    font-weight: 600;
+}
+
+.delete-warning {
+    color: #d32f2f;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 25px;
+    padding: 10px;
+    background: #ffebee;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.delete-form {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.delete-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+    min-width: 140px;
+    text-align: center;
+}
+
+.delete-btn-danger {
+    background: #d32f2f;
+    color: white;
+}
+
+.delete-btn-danger:hover {
+    background: #b71c1c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(211, 47, 47, 0.3);
+}
+
+.delete-btn-secondary {
+    background: #f2f2f2;
+    color: #030303;
+}
+
+.delete-btn-secondary:hover {
+    background: #e5e5e5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .delete-card .card-body {
+        padding: 20px;
+    }
+    
+    .delete-message {
+        font-size: 1.1rem;
+    }
+    
+    .delete-form {
+        flex-direction: column;
+    }
+    
+    .delete-btn {
+        width: 100%;
+    }
+}

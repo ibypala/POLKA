@@ -1,0 +1,335 @@
+/* ========== ЗАГРУЗКА ВИДЕО ========== */
+
+.upload-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Основная карточка */
+.upload-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+.upload-card .card-header {
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-glass-light);
+}
+
+.upload-card .card-header h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.upload-card .card-body {
+    padding: 32px;
+}
+
+/* Форма */
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.upload-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.upload-form .form-label {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+/* Красивые инпуты */
+.upload-form .form-control {
+    width: 100%;
+    padding: 14px 18px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.upload-form .form-control:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+/* Красивая кнопка выбора файла */
+.file-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.file-input-wrapper:hover {
+    border-color: var(--accent);
+    background: var(--bg-glass-light);
+}
+
+.file-input-wrapper input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-input-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--accent);
+    color: white;
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.file-input-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Предпросмотр */
+.preview-container {
+    background: var(--bg-glass-light);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.preview-label {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    display: block;
+}
+
+.preview-box {
+    max-width: 300px;
+    border: 2px dashed var(--border);
+    border-radius: 16px;
+    padding: 12px;
+    background: var(--bg-primary);
+}
+
+.preview-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+}
+
+/* Прогресс */
+.progress {
+    height: 8px;
+    background: var(--bg-primary);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #34c759);
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+/* Кнопки */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+.form-actions .btn {
+    flex: 1;
+    padding: 14px 24px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-success {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-success.active {
+    background: var(--accent);
+    color: white;
+    opacity: 1;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-success.active:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.btn-secondary {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background: var(--hover-bg);
+}
+
+/* Карточка с рекомендациями - ВВЕРХУ У ПОЛЕЙ */
+.tips-card {
+    background: var(--bg-glass-light);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.tips-card h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.tip-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background: var(--bg-glass);
+    border-radius: 16px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.tip-item i {
+    color: var(--accent);
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+}
+
+.tip-item span {
+    flex: 1;
+}
+
+.tip-item strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Специфичные рекомендации */
+.tip-item.aspect {
+    background: linear-gradient(135deg, var(--bg-glass), rgba(0, 122, 255, 0.1));
+    border: 1px solid rgba(0, 122, 255, 0.2);
+}
+
+.tip-item.format {
+    background: linear-gradient(135deg, var(--bg-glass), rgba(52, 199, 89, 0.1));
+    border: 1px solid rgba(52, 199, 89, 0.2);
+}
+
+.tip-item.size {
+    background: linear-gradient(135deg, var(--bg-glass), rgba(255, 149, 0, 0.1));
+    border: 1px solid rgba(255, 149, 0, 0.2);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .upload-page {
+        padding: 12px;
+    }
+    
+    .upload-card .card-header {
+        padding: 20px 24px;
+    }
+    
+    .upload-card .card-header h3 {
+        font-size: 1.4rem;
+    }
+    
+    .upload-card .card-body {
+        padding: 24px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .tips-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .file-input-wrapper {
+        flex-wrap: wrap;
+    }
+    
+    .file-input-button {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .file-input-text {
+        width: 100%;
+        text-align: center;
+        padding: 0 12px 8px;
+    }
+}

@@ -1,0 +1,112 @@
+/* ========== КАРТОЧКИ ВИДЕО ========== */
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+    width: 100%;
+}
+
+.video-card {
+    width: 100%;
+    padding: 8px;
+
+    border-radius: 20px;
+    border: 1px solid transparent;
+
+    background: transparent;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.video-card:hover {
+    border-color: var(--accent);
+
+    background: rgba(255, 255, 255, 0.02);
+
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.video-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.thumbnail-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--wood);
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+.thumbnail-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-thumbnail {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--text-secondary);
+    background: var(--wood);
+}
+
+.duration-badge {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 1rem;
+    border-radius: 4px;
+}
+
+.video-info {
+    padding: 6px;
+}
+
+.video-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 0 0 6px 0;
+    color: var(--text-primary);
+    
+    /* Ограничение в 2 строки с многоточием */
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    
+    line-height: 1.4;
+    max-height: 2.8em; /* 2 строки * 1.4em */
+}
+
+.video-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.video-author {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60%;
+}

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/upload.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="upload-page">
+    <!-- Карточка с рекомендациями - ТЕПЕРЬ СВЕРХУ -->
+    <div class="tips-card">
+        <h5>
+            <i class="fas fa-lightbulb" style="color: var(--accent);"></i>
+            Рекомендации по загрузке
+        </h5>
+        <div class="tips-grid">
+            <div class="tip-item aspect">
+                <i class="fas fa-film"></i>
+                <span><strong>16:9</strong> — идеальное соотношение</span>
+            </div>
+            <div class="tip-item format">
+                <i class="fas fa-file-video"></i>
+                <span><strong>MP4, MOV, AVI</strong> — поддерживаемые форматы</span>
+            </div>
+            <div class="tip-item size">
+                <i class="fas fa-weight-hanging"></i>
+                <span><strong>до 500 MB</strong> — максимальный размер</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основная карточка загрузки -->
+    <div class="upload-card">
+        <div class="card-header">
+            <h3>Загрузить новое видео</h3>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" class="upload-form" id="uploadForm" action="{% url 'ajax_video_upload' %}">
+                {% csrf_token %}
+                
+                <!-- Название видео -->
+                <div class="form-group">
+                    <label class="form-label">Название видео</label>
+                    <input type="text" 
+                           name="title" 
+                           id="id_title"
+                           class="form-control" 
+                           placeholder="Введите название видео"
+                           autocomplete="off"
+                           required>
+                </div>
+                
+                <!-- Описание -->
+                <div class="form-group">
+                    <label class="form-label">Описание</label>
+                    <textarea name="description" 
+                              id="id_description"
+                              class="form-control" 
+                              rows="4"
+                              placeholder="Введите описание видео (необязательно)"></textarea>
+                </div>
+                
+                <!-- Видео файл - красивая кнопка -->
+                <div class="form-group">
+                    <label class="form-label">Видео файл</label>
+                    <div class="file-input-wrapper" id="videoFileWrapper">
+                        <span class="file-input-button">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            Выбрать видео
+                        </span>
+                        <span class="file-input-text" id="videoFileName">
+                            Файл не выбран
+                        </span>
+                        <input type="file" 
+                               name="video_file" 
+                               id="id_video_file"
+                               accept=".mp4,.mov,.avi,.mkv,.webm"
+                               required>
+                    </div>
+                </div>
+                
+                <!-- Превью - красивая кнопка -->
+                <div class="form-group">
+                    <label class="form-label">Превью (необязательно)</label>
+                    <div class="file-input-wrapper" id="thumbnailFileWrapper">
+                        <span class="file-input-button">
+                            <i class="fas fa-image"></i>
+                            Выбрать изображение
+                        </span>
+                        <span class="file-input-text" id="thumbnailFileName">
+                            Будет взято из видео
+                        </span>
+                        <input type="file" 
+                               name="thumbnail" 
+                               id="id_thumbnail"
+                               accept=".jpg,.jpeg,.png">
+                    </div>
+                </div>
+                
+                <!-- Предпросмотр превью -->
+                <div class="preview-container" id="previewContainer" style="display: none;">
+                    <span class="preview-label">Предпросмотр превью</span>
+                    <div class="preview-box">
+                        <img id="thumbnailPreview" class="preview-image">
+                    </div>
+                </div>
+                
+                <!-- Прогресс загрузки -->
+                <div class="progress" id="uploadProgress" style="display: none;">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="progressText" style="display: none;">
+                    0% загружено
+                </div>
+                
+                <!-- Кнопки -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success" id="submitBtn" disabled>
+                        Загрузить видео
+                    </button>
+                    <a href="{% url 'video_list' %}" class="btn btn-secondary">
+                        Отмена
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/upload.js' %}"></script>
+{% endblock %}

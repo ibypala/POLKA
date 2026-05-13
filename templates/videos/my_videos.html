@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/video-card.css' %}">
+    <link rel="stylesheet" href="{% static 'css/my-videos.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="my-videos-page"> <!-- ДОБАВЛЯЕМ КЛАСС-ОБЕРТКУ -->
+    <div class="page-header">
+        <h4>Мои видео</h4>
+        
+        <!-- Сортировка -->
+        <div class="sort-dropdown">
+            <button class="sort-btn" type="button">
+                Сортировка
+            </button>
+
+            <ul class="sort-menu">
+                <li>
+                    <a class="{% if current_sort == 'newest' %}active{% endif %}" href="?sort=newest">
+                        Сначала новые
+                    </a>
+                </li>
+                <li>
+                    <a class="{% if current_sort == 'oldest' %}active{% endif %}" href="?sort=oldest">
+                        Сначала старые
+                    </a>
+                </li>
+                <li>
+                    <a class="{% if current_sort == 'popular' %}active{% endif %}" href="?sort=popular">
+                        По популярности
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="video-grid">
+        {% for video in videos %}
+            <div class="video-card">
+                <a href="{{ video.get_absolute_url }}" class="video-link">
+                    <div class="thumbnail-wrapper">
+                        {% if video.thumbnail %}
+                            <img src="{{ video.thumbnail.url }}" 
+                                 alt="{{ video.title }}" 
+                                 class="thumbnail-img"
+                                 loading="lazy">
+                        {% else %}
+                            <div class="thumbnail-img no-thumbnail">
+                                <span>🎬</span>
+                            </div>
+                        {% endif %}
+                        
+                        {% if video.duration and video.duration > 0 %}
+                            <span class="duration-badge">{{ video.duration_formatted }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="video-info">
+                        <h3 class="video-title">{{ video.title }}</h3>
+                        <div class="video-meta">
+                            <span class="video-views">{{ video.views_count }} просмотров</span>
+                            <a href="{% url 'video_edit' video.pk %}" 
+                               class="edit-link" 
+                               title="Редактировать видео">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <div class="no-videos">
+                <p>
+                    У вас пока нет видео. 
+                    <a href="{% url 'video_upload' %}">Загрузите</a> первое!
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/my-videos.js' %}"></script>
+{% endblock %}

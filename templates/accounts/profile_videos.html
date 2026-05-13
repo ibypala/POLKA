@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/video-card.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile-videos.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <!-- Banner -->
+    <div class="profile-banner">
+        {% if profile_user.profile.banner %}
+            <img src="{{ profile_user.profile.banner.url }}?v={{ profile_user.profile.updated_at|date:'U' }}" alt="Баннер профиля">
+        {% else %}
+            <div class="banner-default"></div>
+        {% endif %}
+    </div>
+
+    <!-- Header с таким же profile-info как на главной -->
+    <div class="profile-header">
+        <div class="profile-info">
+            <!-- АВАТАР ВНУТРИ СТЕКЛА -->
+            <div class="profile-avatar">
+                {% if profile_user.profile.avatar %}
+                    <img src="{{ profile_user.profile.avatar.url }}?v={{ profile_user.profile.updated_at|date:'U' }}" alt="{{ profile_user.username }}">
+                {% else %}
+                    <div class="avatar-placeholder">{{ profile_user.username|first|upper }}</div>
+                {% endif %}
+            </div>
+
+            <!-- ИМЯ -->
+            <h1>{{ profile_user.username }}</h1>
+
+            <!-- СТАТИСТИКА -->
+            <div class="profile-stats">
+                <span><b>{{ profile_user.profile.videos_count }}</b> видео</span>
+                <span>с <b>{{ profile_user.date_joined|date:"d.m.Y" }}</b></span>
+            </div>
+
+            <!-- БИО (если есть) - ТОЧНО ТАКОЕ ЖЕ КЛИКАБЕЛЬНОЕ -->
+            {% if profile_user.profile.bio %}
+            <div class="bio-trigger"
+                 data-username="{{ profile_user.username }}"
+                 data-bio="{{ profile_user.profile.bio|escapejs }}"
+                 data-location="{{ profile_user.profile.location|escapejs }}"
+                 data-website="{{ profile_user.profile.website|escapejs }}"
+                 data-youtube="{{ profile_user.profile.youtube|escapejs }}"
+                 data-telegram="{{ profile_user.profile.telegram|escapejs }}"
+                 data-views="{{ profile_user.profile.views_count }}"
+                 data-videos="{{ profile_user.profile.videos_count }}"
+                 data-subscribers="{{ profile_user.profile.subscribers_count }}"
+                 data-date="{{ profile_user.date_joined|date:'d.m.Y' }}">
+                {{ profile_user.profile.bio|truncatechars:100 }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="profile-nav">
+        <a href="{% url 'profile' profile_user.username %}">Главная</a>
+        <a href="{% url 'profile_videos' profile_user.username %}" class="active">Видео</a>
+    </nav>
+
+    <!-- Сортировка -->
+    <div class="videos-header">
+        <h2>Все видео</h2>
+        
+        <div class="sort-dropdown">
+            <button class="btn" type="button" id="sortBtn">
+                Сортировка
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item {% if current_sort == 'newest' %}active{% endif %}" 
+                       href="?sort=newest">Сначала новые</a>
+                </li>
+                <li>
+                    <a class="dropdown-item {% if current_sort == 'oldest' %}active{% endif %}" 
+                       href="?sort=oldest">Сначала старые</a>
+                </li>
+                <li>
+                    <a class="dropdown-item {% if current_sort == 'popular' %}active{% endif %}" 
+                       href="?sort=popular">По популярности</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Videos -->
+    <section class="profile-videos">
+        <div class="video-grid">
+            {% for video in videos %}
+                {% include 'videos/video_card.html' with video=video %}
+            {% empty %}
+                <div class="no-videos">
+                    <p>У пользователя пока нет видео</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Пагинация -->
+    {% if videos.has_other_pages %}
+        <div class="pagination">
+            {% if videos.has_previous %}
+                <a href="?page={{ videos.previous_page_number }}" class="page-link">←</a>
+            {% endif %}
+            
+            <span class="current-page">{{ videos.number }} / {{ videos.paginator.num_pages }}</span>
+            
+            {% if videos.has_next %}
+                <a href="?page={{ videos.next_page_number }}" class="page-link">→</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<!-- Modal (для био) -->
+<div class="bio-modal" id="bioModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <b>Информация</b>
+            <span id="close">✕</span>
+        </div>
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock %}

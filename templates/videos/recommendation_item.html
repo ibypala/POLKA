@@ -1,0 +1,27 @@
+{% load static %}
+
+<a href="{{ video.get_absolute_url }}" class="recommendation-item">
+    <!-- Превью с длительностью -->
+    <div class="recommendation-thumbnail">
+        {% if video.thumbnail %}
+            <img src="{{ video.thumbnail.url }}" 
+                 alt="{{ video.title }}" 
+                 loading="lazy">
+        {% else %}
+            <div class="no-thumbnail">🎬</div>
+        {% endif %}
+        
+        {% if video.duration and video.duration > 0 %}
+            <span class="duration-badge">{{ video.duration_formatted }}</span>
+        {% endif %}
+    </div>
+    
+    <!-- Информация о видео -->
+    <div class="recommendation-info">
+        <h6 class="recommendation-title">{{ video.title|truncatechars:50 }}</h6>
+        <div class="recommendation-meta">
+            <span class="channel">{{ video.uploaded_by.username }}</span>
+            <span class="views">{{ video.views_count }} просмотров</span>
+        </div>
+    </div>
+</a>

@@ -1,0 +1,313 @@
+/* ========== АВТОРИЗАЦИЯ ========== */
+
+.auth-page {
+    min-height: 80vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px 16px;
+}
+
+/* ===== CARD ===== */
+
+.auth-card {
+    width: 100%;
+    max-width: 450px;
+
+    background: var(--bg-glass);
+
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+
+    border: 1px solid var(--card-border);
+    border-radius: 40px;
+
+    overflow: hidden;
+
+    box-shadow: var(--shadow-glass);
+}
+
+/* ===== HEADER ===== */
+
+.auth-card .card-header {
+    padding: 32px 32px 16px;
+
+    background: transparent;
+    border: none;
+}
+
+.auth-card .card-header h4 {
+    margin: 0;
+
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+
+    color: var(--text-primary);
+
+    letter-spacing: -0.5px;
+}
+
+/* ===== BODY ===== */
+
+.auth-card .card-body {
+    padding: 16px 32px 32px;
+}
+
+/* ===== FORM ===== */
+
+.auth-form {
+    width: 100%;
+}
+
+.auth-form .form-group {
+    margin-bottom: 24px;
+}
+
+.auth-form .form-label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 0.95rem;
+    font-weight: 500;
+
+    color: var(--text-primary);
+}
+
+/* ===== INPUTS ===== */
+
+.auth-form .form-control {
+    width: 100%;
+
+    padding: 14px 18px;
+
+    background: var(--bg-glass);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid var(--card-border);
+    border-radius: 30px;
+
+    font-size: 1rem;
+    line-height: 1.4;
+
+    color: var(--text-primary);
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.auth-form .form-control::placeholder {
+    color: var(--text-secondary);
+}
+
+.auth-form .form-control:focus {
+    outline: none;
+
+    border-color: var(--accent);
+
+    background: var(--bg-glass-light);
+
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.12);
+}
+
+/* ===== BUTTONS ===== */
+
+.auth-form .btn,
+.auth-form .btn-success {
+    display: block;
+
+    width: 100%;
+
+    padding: 14px 18px;
+
+    border: none;
+    border-radius: 40px;
+
+    background: var(--accent);
+
+    color: #fff;
+
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.auth-form .btn:hover,
+.auth-form .btn-success:hover {
+    background: var(--accent-hover);
+
+    transform: translateY(-2px);
+}
+
+.auth-form .btn:active,
+.auth-form .btn-success:active {
+    transform: translateY(0);
+}
+
+/* ===== DJANGO ERRORS ===== */
+
+/* Убираем стандартные ошибки Django сверху */
+.auth-form .errorlist {
+    display: none;
+}
+
+/* Красивые ошибки */
+.error-message {
+    margin-top: 8px;
+
+    padding: 12px 16px;
+
+    background: rgba(255, 59, 48, 0.12);
+
+    border: 1px solid rgba(255, 59, 48, 0.25);
+    border-radius: 18px;
+
+    color: #ff453a;
+
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Подсветка инпута с ошибкой */
+.auth-form .has-error .form-control {
+    border-color: rgba(255, 69, 58, 0.4);
+}
+
+.auth-form .has-error .form-control:focus {
+    border-color: #ff453a;
+
+    box-shadow: 0 0 0 3px rgba(255, 69, 58, 0.15);
+}
+
+/* ===== HELP TEXT ===== */
+
+.help-text {
+    margin-top: 8px;
+
+    color: var(--text-secondary);
+
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.help-text ul {
+    margin: 8px 0 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.help-text li {
+    position: relative;
+
+    padding: 4px 0 4px 20px;
+}
+
+.help-text li::before {
+    content: "•";
+
+    position: absolute;
+    left: 5px;
+
+    color: var(--accent);
+}
+
+/* ===== DIVIDER ===== */
+
+.auth-divider {
+    margin: 24px 0;
+
+    border: none;
+    border-top: 1px solid var(--card-border);
+}
+
+/* ===== LINKS ===== */
+
+.auth-links {
+    text-align: center;
+
+    color: var(--text-secondary);
+}
+
+.auth-links a {
+    color: var(--accent);
+
+    text-decoration: none;
+    font-weight: 500;
+
+    transition: opacity 0.2s ease;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+    .auth-card {
+        border-radius: 32px;
+    }
+
+    .auth-card .card-header {
+        padding: 24px 24px 12px;
+    }
+
+    .auth-card .card-body {
+        padding: 12px 24px 24px;
+    }
+
+    .auth-card .card-header h4 {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-page {
+        padding: 12px;
+    }
+
+    .auth-card {
+        border-radius: 28px;
+    }
+
+    .auth-card .card-header {
+        padding: 20px 20px 10px;
+    }
+
+    .auth-card .card-body {
+        padding: 10px 20px 20px;
+    }
+
+    .auth-card .card-header h4 {
+        font-size: 1.4rem;
+    }
+
+    .auth-form .form-control,
+    .auth-form .btn,
+    .auth-form .btn-success {
+        padding: 13px 16px;
+        font-size: 0.95rem;
+    }
+}

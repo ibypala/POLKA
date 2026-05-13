@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="auth-card card">
+
+                <div class="card-header">
+                    <h4 class="mb-0">🔐 Вход на сайт</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <form method="post" class="auth-form">
+
+                        {% csrf_token %}
+
+                        <!-- USERNAME -->
+                        <div class="form-group {% if form.username.errors %}has-error{% endif %}">
+
+                            <label class="form-label">
+                                Имя пользователя
+                            </label>
+
+                            {{ form.username }}
+
+                            {% if form.username.errors %}
+                                <div class="error-message">
+                                    {% for error in form.username.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                        <!-- PASSWORD -->
+                        <div class="form-group {% if form.password.errors or form.non_field_errors %}has-error{% endif %}">
+
+                            <label class="form-label">
+                                Пароль
+                            </label>
+
+                            {{ form.password }}
+
+                            {% if form.password.errors %}
+                                <div class="error-message">
+                                    {% for error in form.password.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            {% if form.non_field_errors %}
+                                <div class="error-message">
+                                    Неверное имя пользователя или пароль
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            Войти
+                        </button>
+
+                    </form>
+
+                    <hr class="auth-divider">
+
+                    <div class="auth-links">
+                        <p>
+                            Нет аккаунта?
+                            <a href="{% url 'register' %}">
+                                Зарегистрироваться
+                            </a>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

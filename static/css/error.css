@@ -1,0 +1,95 @@
+/* ========== СТИЛИ ДЛЯ СТРАНИЦ ОШИБОК ========== */
+
+.error-page {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-card {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.error-card .card-header {
+    padding: 20px;
+    border-bottom: none;
+}
+
+.error-card .card-header.bg-warning {
+    background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+}
+
+.error-card .card-header h3 {
+    margin: 0;
+    color: white;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.error-card .card-body {
+    padding: 30px;
+}
+
+.error-message {
+    font-size: 1.2rem;
+    color: #030303;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.error-links {
+    margin: 20px 0;
+    color: #606060;
+}
+
+.error-links a {
+    color: #065fd4;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.error-links a:hover {
+    color: #0b4fa5;
+    text-decoration: underline;
+}
+
+.error-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #065fd4;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.error-btn:hover {
+    background: #0b4fa5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(6, 95, 212, 0.3);
+    text-decoration: none !important;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .error-card .card-body {
+        padding: 20px;
+    }
+    
+    .error-message {
+        font-size: 1.1rem;
+    }
+}

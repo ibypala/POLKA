@@ -1,0 +1,264 @@
+/* ===== VIDEOS HEADER ===== */
+.videos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.videos-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* Сортировка (как на главной) */
+.sort-dropdown {
+    position: relative;
+}
+
+.sort-dropdown .btn {
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--card-border);
+    border-radius: 40px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.sort-dropdown .btn:hover {
+    background: rgba(255,255,255,0.45);
+}
+
+/* Пагинация */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0 20px;
+}
+
+.page-link {
+    padding: 8px 20px;
+    background: rgba(255,255,255,0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--card-border);
+    border-radius: 40px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.page-link:hover {
+    background: rgba(255,255,255,0.45);
+}
+
+.current-page {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+
+/* ========== СОРТИРОВКА (КАК НА ГЛАВНОЙ) ========== */
+
+.videos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.videos-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.sort-dropdown {
+    position: relative;
+}
+
+/* Полностью переопределяем кнопку */
+.sort-dropdown .btn {
+    all: unset;
+    padding: 10px 24px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 160px;
+    justify-content: space-between;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+
+.sort-dropdown .btn:hover {
+    background: var(--bg-glass-light);
+    border-color: var(--accent);
+}
+
+.sort-dropdown .btn i {
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: transform 0.2s;
+}
+
+.sort-dropdown .btn[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}
+
+/* Полностью переопределяем дропдаун меню */
+.dropdown-menu {
+    all: unset;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 8px 0;
+    min-width: 200px;
+    box-shadow: var(--shadow-glass);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    display: block;
+    box-sizing: border-box;
+}
+
+.dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Убираем все возможные маркеры и отступы */
+.dropdown-menu,
+.dropdown-menu ul,
+.dropdown-menu li {
+    list-style: none;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown-menu li {
+    display: block;
+    width: 100%;
+}
+
+.dropdown-menu li::before,
+.dropdown-menu li::after,
+.dropdown-menu li::marker {
+    display: none;
+    content: '';
+}
+
+/* Стили для пунктов меню */
+.dropdown-item {
+    all: unset;
+    display: block;
+    padding: 12px 20px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+    transition: background 0.2s;
+    line-height: 1.5;
+    white-space: nowrap;
+    background: transparent;
+}
+
+.dropdown-item:hover {
+    background: var(--hover-bg);
+}
+
+.dropdown-item.active {
+    background: var(--accent);
+    color: white;
+}
+
+.dropdown-item.active:hover {
+    background: var(--accent-hover);
+}
+
+/* Пагинация */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0 20px;
+}
+
+.page-link {
+    padding: 10px 24px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.page-link:hover {
+    background: var(--bg-glass-light);
+    border-color: var(--accent);
+}
+
+.current-page {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .videos-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .sort-dropdown {
+        width: 100%;
+    }
+    
+    .sort-dropdown .btn {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+    }
+}

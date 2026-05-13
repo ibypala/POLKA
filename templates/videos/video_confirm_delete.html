@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/confirm-delete.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="delete-page">
+    <div class="delete-card card">
+        <div class="card-header bg-danger">
+            <h3>⚠️ Подтверждение удаления</h3>
+        </div>
+        <div class="card-body">
+            <p class="delete-message">
+                Вы уверены, что хотите удалить видео 
+                <strong>"{{ video.title }}"</strong>?
+            </p>
+            
+            <div class="delete-warning">
+                ⚠️ Это действие нельзя отменить!
+            </div>
+            
+            <form method="post" class="delete-form">
+                {% csrf_token %}
+                <button type="submit" class="delete-btn delete-btn-danger">
+                    Да, удалить
+                </button>
+                <a href="{% url 'video_detail' video.pk %}" 
+                   class="delete-btn delete-btn-secondary">
+                    Отмена
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/video-edit.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="edit-page">
+    <div class="edit-container">
+        <div class="edit-header">
+            <h1>✏️ Редактирование видео</h1>
+            <a href="{% url 'video_detail' video.vid %}" class="btn-cancel">← Отмена</a>
+        </div>
+
+        <div class="edit-card">
+            <div class="video-info">
+                <div class="video-thumb">
+                    {% if video.thumbnail %}
+                        <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
+                    {% else %}
+                        <div class="no-thumb">🎬</div>
+                    {% endif %}
+                </div>
+                <div class="video-meta">
+                    <h3>{{ video.title }}</h3>
+                    <p>{{ video.views_count }} просмотров • {{ video.uploaded_at|date:"d.m.Y" }}</p>
+                </div>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="edit-form" id="editForm">
+                {% csrf_token %}
+
+                <!-- Название видео -->
+                <div class="form-group">
+                    <label>Название видео</label>
+                    <input type="text" name="title" id="id_title" class="form-control" value="{{ video.title }}" required>
+                </div>
+
+                <!-- Описание -->
+                <div class="form-group">
+                    <label>Описание</label>
+                    <textarea name="description" id="id_description" class="form-control" rows="5">{{ video.description }}</textarea>
+                </div>
+
+                <!-- Превью (красивая кнопка) -->
+                <div class="form-group">
+                    <label>Новое превью (необязательно)</label>
+                    <div class="file-input-wrapper">
+                        <span class="file-input-button">
+                            <i class="fas fa-image"></i>
+                            Выбрать файл
+                        </span>
+                        <span class="file-input-text" id="file-name">Файл не выбран</span>
+                        <input type="file" name="thumbnail" id="id_thumbnail" accept=".jpg,.jpeg,.png">
+                    </div>
+                    <div class="help-text">JPG, PNG. Максимум 5MB</div>
+                </div>
+
+                <!-- Текущее превью -->
+                <div class="form-group">
+                    <label>Текущее превью</label>
+                    <div class="current-preview">
+                        {% if video.thumbnail %}
+                            <img src="{{ video.thumbnail.url }}" alt="Превью" class="preview-img">
+                        {% else %}
+                            <div class="no-preview">Нет превью</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Новое превью (предпросмотр) -->
+                <div class="form-group" id="newPreviewContainer" style="display: none;">
+                    <label>Новое превью</label>
+                    <div class="new-preview">
+                        <img id="thumbnailPreview" class="preview-img">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">
+                        💾 Сохранить изменения
+                    </button>
+                    <button type="button" class="btn-delete" id="deleteBtn">
+                        🗑️ Удалить видео
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Модалка удаления -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal-content">
+        <h3>Удалить видео?</h3>
+        <p class="warning-text">Это действие нельзя отменить!</p>
+        <div class="modal-actions">
+            <button class="btn-cancel-modal" id="cancelDelete">Отмена</button>
+            <form method="post" action="{% url 'video_delete' video.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete-modal">Да, удалить</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/video-edit.js' %}"></script>
+{% endblock %}

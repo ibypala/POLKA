@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}POLKA{% endblock %}</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Наши CSS файлы -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Навигация -->
+    <div class="nav">
+        <div class="nav-container">
+            <a href="{% url 'video_list' %}" class="logo">POLKA</a>
+            
+            <div class="nav-right">
+                {% if user.is_authenticated %}
+                    <!-- Кнопка создания видео -->
+                    <a href="{% url 'video_upload' %}" class="create-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>Создать</span>
+                    </a>
+                    
+                    <!-- Аватар с выпадающим меню -->
+                    <div class="user-menu">
+                        <button class="user-menu-btn" id="userMenuBtn">
+                            {% if user.profile.avatar %}
+                                <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="user-avatar">
+                            {% else %}
+                                <div class="user-avatar-placeholder">{{ user.username|first|upper }}</div>
+                            {% endif %}
+                            <span class="menu-text">Меню</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        
+                        <!-- Выпадающее меню -->
+                        <div class="user-dropdown" id="userDropdown">
+                            <div class="user-info">
+                                <div class="user-name">{{ user.username }}</div>
+                                <div class="user-email">{{ user.email}}</div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a href="{% url 'profile' user.username %}" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                Мой профиль
+                            </a>
+                            <a href="{% url 'my_videos' %}" class="dropdown-item">
+                                <i class="fas fa-film"></i>
+                                Мои видео
+                            </a>
+                            <a href="{% url 'profile_settings' %}" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                Настройки
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item theme-toggle-dropdown" id="themeToggleDropdown">
+                                <i class="fas fa-moon"></i>
+                                <span>Темная тема</span>
+                            </button>
+                            <div class="dropdown-divider"></div>
+                            <a href="{% url 'logout' %}" class="dropdown-item logout-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Выйти
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <!-- Для гостя -->
+                    <a href="{% url 'login' %}" class="nav-link">Войти</a>
+                    <a href="{% url 'register' %}" class="nav-link register-link">Регистрация</a>
+                    
+                    <!-- Кнопка темы для гостя -->
+                    <button class="theme-toggle" id="themeToggleGuest" title="Сменить тему">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        
+        
+        <!-- УБИРАЕМ page-container - теперь каждая страница сама управляет отступами -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Скрипты -->
+    <script src="{% static 'js/theme.js' %}"></script>
+    <script src="{% static 'js/menu.js' %}"></script>
+    <script src="{% static 'js/dropdown.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

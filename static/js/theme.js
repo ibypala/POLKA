@@ -20,6 +20,14 @@
         if (themeText) {
             themeText.textContent = theme === 'light' ? 'Темная тема' : 'Светлая тема';
         }
+
+        const favicon = document.getElementById('favicon');
+
+            if (favicon) {
+                favicon.href = theme === 'dark'
+                    ? '/static/img/favicon-dark.png?v=2'
+                    : '/static/img/favicon-light.png?v=2';
+            }
     };
     
     // Инициализация

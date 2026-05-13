@@ -11,7 +11,7 @@
     --border: rgba(0, 0, 0, 0.1);
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     --card-bg: #ffffff;
-    --nav-bg: rgba(245, 245, 247, 0.9)
+    --nav-bg: rgba(245, 245, 247, 0.9);
     --wood: #e5d5c5;
     --hover-bg: rgba(0, 0, 0, 0.05);
     --bg-glass: rgba(255, 255, 255, 0.5);      /* Менее прозрачное */
@@ -32,7 +32,7 @@
     --border: rgba(255, 255, 255, 0.1);
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     --card-bg: #2c2c2e;
-    --nav-bg: rgba(26, 26, 30, 0.9)
+    --nav-bg: rgba(26, 26, 30, 0.9);
     --wood: #5c4e3d;
     --wood-dark: #3a3025;
     --hover-bg: rgba(255, 255, 255, 0.05);
@@ -68,6 +68,7 @@ body {
 
     background: var(--nav-bg);
     backdrop-filter: blur(15px);
+    
 }
 
 .nav-container {

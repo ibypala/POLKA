@@ -1,120 +1,174 @@
-// ========== PROFILE EDIT ==========
+// ========== VIDEO EDIT ==========
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    /* ========================= */
-    /* AVATAR PREVIEW */
-    /* ========================= */
+    /* ========================================= */
+    /* DELETE MODAL */
+    /* ========================================= */
 
-    const avatarInput = document.getElementById('avatarInput');
-    const avatarPreview = document.getElementById('avatarPreview');
+    const deleteBtn =
+        document.getElementById('deleteBtn');
 
-    if (avatarInput && avatarPreview) {
+    const deleteModal =
+        document.getElementById('deleteModal');
 
-        avatarInput.addEventListener('change', e => {
+    const cancelDelete =
+        document.getElementById('cancelDelete');
 
-            const file = e.target.files[0];
+    if (
+        deleteBtn &&
+        deleteModal
+    ) {
 
-            if (!file) return;
+        deleteBtn.addEventListener('click', () => {
 
-            // проверка размера
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Аватар слишком большой. Максимум 5MB');
-                avatarInput.value = '';
-                return;
-            }
+            deleteModal.classList.add('show');
 
-            // проверка типа
-            if (!file.type.startsWith('image/')) {
-                alert('Выберите изображение');
-                avatarInput.value = '';
-                return;
-            }
+            document.body.style.overflow = 'hidden';
 
-            const reader = new FileReader();
+        });
 
-            reader.onload = event => {
+    }
 
-                // если был div.default — заменяем на img
-                if (avatarPreview.tagName !== 'IMG') {
+    function closeModal() {
 
-                    const img = document.createElement('img');
+        deleteModal.classList.remove('show');
 
-                    img.id = 'avatarPreview';
-                    img.className = 'avatar-preview';
-                    img.src = event.target.result;
+        document.body.style.overflow = '';
 
-                    avatarPreview.replaceWith(img);
+    }
 
-                } else {
+    if (cancelDelete) {
 
-                    avatarPreview.src = event.target.result;
+        cancelDelete.addEventListener(
+            'click',
+            closeModal
+        );
+
+    }
+
+    if (deleteModal) {
+
+        deleteModal.addEventListener(
+            'click',
+            e => {
+
+                if (e.target === deleteModal) {
+
+                    closeModal();
+
                 }
-            };
 
-            reader.readAsDataURL(file);
-        });
+            }
+        );
+
     }
 
-    /* ========================= */
-    /* BANNER PREVIEW */
-    /* ========================= */
+    /* ========================================= */
+    /* THUMBNAIL PREVIEW */
+    /* ========================================= */
 
-    const bannerInput = document.getElementById('bannerInput');
-    const bannerPreview = document.getElementById('bannerPreview');
+    const thumbnailInput =
+        document.getElementById('id_thumbnail');
 
-    if (bannerInput && bannerPreview) {
+    const thumbnailPreview =
+        document.getElementById(
+            'thumbnailPreview'
+        );
 
-        bannerInput.addEventListener('change', e => {
+    const previewContainer =
+        document.getElementById(
+            'newPreviewContainer'
+        );
 
-            const file = e.target.files[0];
+    const fileName =
+        document.getElementById('file-name');
 
-            if (!file) return;
+    if (thumbnailInput) {
 
-            // проверка размера
-            if (file.size > 10 * 1024 * 1024) {
-                alert('Баннер слишком большой. Максимум 10MB');
-                bannerInput.value = '';
-                return;
+        thumbnailInput.addEventListener(
+            'change',
+            e => {
+
+                const file =
+                    e.target.files[0];
+
+                if (!file) return;
+
+                fileName.textContent =
+                    file.name;
+
+                /* SIZE */
+
+                if (
+                    file.size >
+                    5 * 1024 * 1024
+                ) {
+
+                    alert(
+                        'Превью слишком большое. Максимум 5MB'
+                    );
+
+                    thumbnailInput.value = '';
+
+                    fileName.textContent =
+                        'Файл не выбран';
+
+                    return;
+
+                }
+
+                /* TYPE */
+
+                if (
+                    !file.type.startsWith(
+                        'image/'
+                    )
+                ) {
+
+                    alert(
+                        'Выберите изображение'
+                    );
+
+                    thumbnailInput.value = '';
+
+                    fileName.textContent =
+                        'Файл не выбран';
+
+                    return;
+
+                }
+
+                const reader =
+                    new FileReader();
+
+                reader.onload = event => {
+
+                    if (
+                        thumbnailPreview
+                    ) {
+
+                        thumbnailPreview.src =
+                            event.target.result;
+
+                    }
+
+                    if (
+                        previewContainer
+                    ) {
+
+                        previewContainer.style.display =
+                            'block';
+
+                    }
+
+                };
+
+                reader.readAsDataURL(file);
+
             }
+        );
 
-            // проверка типа
-            if (!file.type.startsWith('image/')) {
-                alert('Выберите изображение');
-                bannerInput.value = '';
-                return;
-            }
-
-            const reader = new FileReader();
-
-            reader.onload = event => {
-
-                bannerPreview.src = event.target.result;
-            };
-
-            reader.readAsDataURL(file);
-        });
-    }
-
-    /* ========================= */
-    /* BIO COUNTER */
-    /* ========================= */
-
-    const bioField = document.getElementById('id_bio');
-    const bioCounter = document.getElementById('bio-counter');
-
-    if (bioField && bioCounter) {
-
-        const updateCounter = () => {
-
-            const length = bioField.value.length;
-
-            bioCounter.textContent = `${length}/500`;
-        };
-
-        updateCounter();
-
-        bioField.addEventListener('input', updateCounter);
     }
 
 });

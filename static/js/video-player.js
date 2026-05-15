@@ -112,64 +112,51 @@ document.addEventListener('DOMContentLoaded', () => {
     video.addEventListener('timeupdate', updateProgressUI);
 
     if (progressBar) {
-        // Клик по полосе
-        progressBar.addEventListener('click', (e) => {
-            const clientX = e.clientX || (e.touches && e.touches[0]?.clientX);
-            setVideoTimeFromEvent(clientX);
-            showControlsTemporarily();
-        });
-
-        // Drag
-        const startDrag = (e) => {
-            e.preventDefault();
+        // ==== SCRUB PREVIEW ====
+        let wasPlaying = false;
+        const startScrub = (clientX) => {
+            if (!video.duration) return;
             isDragging = true;
-            const clientX = e.clientX || (e.touches && e.touches[0]?.clientX);
-            if (clientX) setVideoTimeFromEvent(clientX);
+            wasPlaying = !video.paused;
+            video.pause();
+            setVideoTimeFromEvent(clientX);
         };
-        const onDrag = (e) => {
+        const scrubMove = (clientX) => {
             if (!isDragging) return;
-            e.preventDefault();
-            const clientX = e.clientX || (e.touches && e.touches[0]?.clientX);
-            if (clientX) setVideoTimeFromEvent(clientX);
-            showControlsTemporarily();
+            setVideoTimeFromEvent(clientX);
         };
-        const stopDrag = () => { isDragging = false; };
+        const stopScrub = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            if (wasPlaying) video.play();
+        };
 
         // Mouse
-        progressBar.addEventListener('mousedown', startDrag);
-        document.addEventListener('mousemove', onDrag);
-        document.addEventListener('mouseup', stopDrag);
+        progressBar.addEventListener('mousedown', e => { e.preventDefault(); startScrub(e.clientX); });
+        document.addEventListener('mousemove', e => { scrubMove(e.clientX); });
+        document.addEventListener('mouseup', stopScrub);
 
         // Touch
-        progressBar.addEventListener('touchstart', startDrag);
-        document.addEventListener('touchmove', onDrag);
-        document.addEventListener('touchend', stopDrag);
+        progressBar.addEventListener('touchstart', e => { startScrub(e.touches[0].clientX); });
+        document.addEventListener('touchmove', e => { scrubMove(e.touches[0].clientX); });
+        document.addEventListener('touchend', stopScrub);
 
         // Hover time
         let hoverTimeout;
-        progressBar.addEventListener('mousemove', (e) => {
+        progressBar.addEventListener('mousemove', e => {
             if (isDragging) return;
             const rect = progressBar.getBoundingClientRect();
             let pos = (e.clientX - rect.left) / rect.width;
             pos = Math.min(Math.max(pos, 0), 1);
             const hoverTime = pos * video.duration;
-            if (currentTimeSpan) {
-                currentTimeSpan.textContent = formatTime(hoverTime);
-                currentTimeSpan.style.opacity = '0.7';
-            }
+            if (currentTimeSpan) { currentTimeSpan.textContent = formatTime(hoverTime); currentTimeSpan.style.opacity = '0.7'; }
             if (hoverTimeout) clearTimeout(hoverTimeout);
             hoverTimeout = setTimeout(() => {
-                if (currentTimeSpan && !isDragging) {
-                    currentTimeSpan.textContent = formatTime(video.currentTime);
-                    currentTimeSpan.style.opacity = '1';
-                }
+                if (currentTimeSpan && !isDragging) { currentTimeSpan.textContent = formatTime(video.currentTime); currentTimeSpan.style.opacity = '1'; }
             }, 500);
         });
         progressBar.addEventListener('mouseleave', () => {
-            if (currentTimeSpan && !isDragging) {
-                currentTimeSpan.textContent = formatTime(video.currentTime);
-                currentTimeSpan.style.opacity = '1';
-            }
+            if (currentTimeSpan && !isDragging) { currentTimeSpan.textContent = formatTime(video.currentTime); currentTimeSpan.style.opacity = '1'; }
         });
     }
 
@@ -196,14 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (muteBtn) {
         muteBtn.addEventListener('click', () => {
-            if (video.muted) {
-                video.muted = false;
-                video.volume = savedVolume || 1;
-            } else {
-                savedVolume = video.volume;
-                video.muted = true;
-                video.volume = 0;
-            }
+            if (video.muted) { video.muted = false; video.volume = savedVolume || 1; }
+            else { savedVolume = video.volume; video.muted = true; video.volume = 0; }
             if (volumeSlider) volumeSlider.value = video.muted ? 0 : video.volume;
             updateMuteIcon();
         });
@@ -221,10 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: false });
 
     /* ================= SPEED ================= */
-    if (speedBtn) speedBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        speedMenu?.classList.toggle('hidden');
-    });
+    if (speedBtn) speedBtn.addEventListener('click', e => { e.stopPropagation(); speedMenu?.classList.toggle('hidden'); });
     if (speedMenu) {
         document.querySelectorAll('.speed-option').forEach(option => {
             option.addEventListener('click', function() {
@@ -237,30 +215,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-    document.addEventListener('click', (e) => {
-        if (speedBtn && speedMenu && !speedBtn.contains(e.target) && !speedMenu.contains(e.target)) {
-            speedMenu.classList.add('hidden');
-        }
-    });
+    document.addEventListener('click', e => { if (speedBtn && speedMenu && !speedBtn.contains(e.target) && !speedMenu.contains(e.target)) speedMenu.classList.add('hidden'); });
 
     /* ================= FULLSCREEN ================= */
-    if (fullscreenBtn) {
-        fullscreenBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) videoContainer?.requestFullscreen();
-            else document.exitFullscreen();
-        });
-    }
+    if (fullscreenBtn) fullscreenBtn.addEventListener('click', () => { if (!document.fullscreenElement) videoContainer?.requestFullscreen(); else document.exitFullscreen(); });
     document.addEventListener('fullscreenchange', () => {
         if (!fullscreenBtn) return;
         const fsIcon = fullscreenBtn.querySelector('.fullscreen-icon');
         const exitIcon = fullscreenBtn.querySelector('.fullscreen-exit-icon');
-        if (document.fullscreenElement === videoContainer) {
-            if (fsIcon) fsIcon.style.display = 'none';
-            if (exitIcon) exitIcon.style.display = 'block';
-        } else {
-            if (fsIcon) fsIcon.style.display = 'block';
-            if (exitIcon) exitIcon.style.display = 'none';
-        }
+        if (document.fullscreenElement === videoContainer) { if (fsIcon) fsIcon.style.display = 'none'; if (exitIcon) exitIcon.style.display = 'block'; }
+        else { if (fsIcon) fsIcon.style.display = 'block'; if (exitIcon) exitIcon.style.display = 'none'; }
     });
 
     /* ================= AUTO-HIDE CONTROLS ================= */
@@ -271,16 +235,10 @@ document.addEventListener('DOMContentLoaded', () => {
         videoControls.style.pointerEvents = 'auto';
         clearTimeout(hideTimeout);
         if (!video.paused) {
-            hideTimeout = setTimeout(() => {
-                videoControls.style.opacity = '0';
-                videoControls.style.pointerEvents = 'none';
-            }, 1000);
+            hideTimeout = setTimeout(() => { videoControls.style.opacity = '0'; videoControls.style.pointerEvents = 'none'; }, 1000);
         }
     }
-    function resetHideTimer() {
-        if (video.paused) return;
-        showControlsTemporarily();
-    }
+    function resetHideTimer() { if (!video.paused) showControlsTemporarily(); }
     videoContainer.addEventListener('mousemove', resetHideTimer);
     videoContainer.addEventListener('touchstart', resetHideTimer);
     showControlsTemporarily();
@@ -302,10 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
     video.addEventListener('loadedmetadata', () => {
         const videoWidth = video.videoWidth;
         const videoHeight = video.videoHeight;
-        if (videoWidth && videoHeight && videoHeight > videoWidth) {
-            video.style.objectFit = 'contain';
-        } else {
-            video.style.objectFit = 'cover';
-        }
+        video.style.objectFit = (videoWidth && videoHeight && videoHeight > videoWidth) ? 'contain' : 'cover';
     });
 });

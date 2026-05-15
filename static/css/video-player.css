@@ -68,21 +68,6 @@
     width: 0%;
 }
 
-.progress-handle {
-    width: 12px;
-    height: 12px;
-    background: var(--accent);
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-}
-
-.progress-bar:hover .progress-handle {
-    opacity: 1;
-}
-
 .controls-wrapper {
     display: flex;
     align-items: center;

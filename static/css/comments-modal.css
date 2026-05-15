@@ -1,0 +1,136 @@
+/* ========== МОДАЛКА УДАЛЕНИЯ КОММЕНТАРИЯ ========== */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    z-index: 99999;
+    animation: fadeIn 0.15s ease;
+}
+
+.delete-comment-modal {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    animation: modalIn 0.18s ease;
+}
+
+.delete-comment-modal h3 {
+    margin: 0 0 12px;
+    color: var(--text-primary);
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.delete-comment-modal p {
+    margin: 0 0 10px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.delete-comment-modal .danger-text {
+    color: #ff453a;
+    font-weight: 500;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 26px;
+}
+
+.modal-actions .btn-danger,
+.modal-actions .btn-cancel {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.modal-actions .btn-danger {
+    background: #ff453a;
+    color: white;
+}
+
+.modal-actions .btn-danger:hover {
+    background: #e03d34;
+    transform: translateY(-1px);
+}
+
+.modal-actions .btn-cancel {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+}
+
+.modal-actions .btn-cancel:hover {
+    opacity: 0.85;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Toast ошибки */
+.comment-error-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%) translateY(20px);
+    padding: 14px 18px;
+    background: rgba(255, 69, 58, 0.96);
+    color: white;
+    border-radius: 18px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    z-index: 999999;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.comment-error-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Адаптив модалки */
+@media (max-width: 480px) {
+    .delete-comment-modal {
+        padding: 22px;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .modal-actions .btn-danger,
+    .modal-actions .btn-cancel {
+        width: 100%;
+    }
+}

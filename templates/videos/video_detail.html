@@ -146,7 +146,6 @@
             </div>
             
             <!-- БЛОК ОПИСАНИЯ -->
-            {% if video.description %}
             <div class="description-block" id="descriptionBlock">
                 <div class="description-header">
                     <div class="description-meta">
@@ -164,7 +163,11 @@
                 
                 <div class="description-content" id="descriptionContent">
                     <div class="description-text" id="descriptionText">
-                        {{ video.description|linebreaks }}
+                        {% if video.description %}
+                            {{ video.description|linebreaks }}
+                        {% else %}
+                            <em>Описание отсутствует.</em>
+                        {% endif %}
                     </div>
                 </div>
                 
@@ -173,7 +176,7 @@
                     <span>Свернуть <i class="fas fa-chevron-up"></i></span>
                 </div>
             </div>
-            {% endif %}
+            
         </div>
         
         <!-- БЛОК КОММЕНТАРИЕВ -->
@@ -182,7 +185,6 @@
                 Комментарии <span class="comments-count">{{ video.comments.count }}</span>
             </h3>
             
-            <!-- Форма добавления комментария -->
             {% if user.is_authenticated %}
                 <div class="add-comment">
                     <div class="comment-avatar">
@@ -204,7 +206,6 @@
                 </div>
             {% endif %}
             
-            <!-- Список комментариев -->
             <div class="comments-list" id="comments-list">
                 {% for comment in comments %}
                     {% include 'videos/comment_item.html' with comment=comment %}

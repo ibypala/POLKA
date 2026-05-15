@@ -16,34 +16,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const videoContainer = document.getElementById('videoPlayerContainer');
     const videoControls = document.querySelector('.video-controls');
 
+    let isDragging = false;
+    let savedVolume = video.volume;
+
     /* ================= FORMAT TIME ================= */
     function formatTime(seconds) {
-        if (!isFinite(seconds)) return '0:00';
+        if (!isFinite(seconds) || isNaN(seconds)) return '0:00';
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     }
 
+    /* ================= UPDATE PROGRESS ================= */
+    function updateProgressUI() {
+        if (!isFinite(video.duration) || video.duration === 0) return;
+        const percent = (video.currentTime / video.duration) * 100;
+        if (progressFilled) progressFilled.style.width = percent + '%';
+        if (progressHandle) progressHandle.style.left = percent + '%';
+        if (currentTimeSpan) currentTimeSpan.textContent = formatTime(video.currentTime);
+    }
+
     /* ================= PLAY / PAUSE ================= */
-    function togglePlay() { video.paused ? video.play() : video.pause(); }
+    function togglePlay() {
+        video.paused ? video.play() : video.pause();
+    }
+
+    function updatePlayPauseIcons() {
+        if (!playPauseBtn) return;
+        const playIcon = playPauseBtn.querySelector('.play-icon');
+        const pauseIcon = playPauseBtn.querySelector('.pause-icon');
+        if (video.paused) {
+            if (playIcon) playIcon.style.display = 'block';
+            if (pauseIcon) pauseIcon.style.display = 'none';
+        } else {
+            if (playIcon) playIcon.style.display = 'none';
+            if (pauseIcon) pauseIcon.style.display = 'block';
+        }
+    }
+
     if (playPauseBtn) playPauseBtn.addEventListener('click', togglePlay);
     video.addEventListener('click', togglePlay);
-
-    video.addEventListener('play', () => {
-        if (!playPauseBtn) return;
-        const playIcon = playPauseBtn.querySelector('.play-icon');
-        const pauseIcon = playPauseBtn.querySelector('.pause-icon');
-        if (playIcon) playIcon.style.display = 'none';
-        if (pauseIcon) pauseIcon.style.display = 'block';
-    });
-
-    video.addEventListener('pause', () => {
-        if (!playPauseBtn) return;
-        const playIcon = playPauseBtn.querySelector('.play-icon');
-        const pauseIcon = playPauseBtn.querySelector('.pause-icon');
-        if (playIcon) playIcon.style.display = 'block';
-        if (pauseIcon) pauseIcon.style.display = 'none';
-    });
+    video.addEventListener('play', updatePlayPauseIcons);
+    video.addEventListener('pause', updatePlayPauseIcons);
+    updatePlayPauseIcons();
 
     /* ================= HOTKEYS ================= */
     document.addEventListener('keydown', e => {
@@ -52,43 +67,111 @@ document.addEventListener('DOMContentLoaded', () => {
         const isTyping = tag === 'INPUT' || tag === 'TEXTAREA' || activeElement?.isContentEditable;
         if (isTyping) return;
 
-        switch(e.code){
+        switch(e.code) {
             case 'Space':
             case 'Spacebar':
-                e.preventDefault(); togglePlay(); break;
+                e.preventDefault();
+                togglePlay();
+                break;
             case 'ArrowLeft':
-                e.preventDefault(); video.currentTime = Math.max(0, video.currentTime - 5); break;
+                e.preventDefault();
+                video.currentTime = Math.max(0, video.currentTime - 5);
+                break;
             case 'ArrowRight':
-                e.preventDefault(); video.currentTime = Math.min(video.duration || 999999, video.currentTime + 5); break;
+                e.preventDefault();
+                video.currentTime = Math.min(video.duration || 999999, video.currentTime + 5);
+                break;
             case 'KeyM':
-                e.preventDefault(); video.muted = !video.muted; updateMuteIcon(); break;
+                e.preventDefault();
+                video.muted = !video.muted;
+                if (volumeSlider) volumeSlider.value = video.muted ? 0 : video.volume;
+                updateMuteIcon();
+                break;
             case 'KeyF':
                 e.preventDefault();
-                if (!document.fullscreenElement) videoContainer.requestFullscreen();
+                if (!document.fullscreenElement) videoContainer?.requestFullscreen();
                 else document.exitFullscreen();
                 break;
         }
     }, true);
 
-    /* ================= PROGRESS ================= */
-    function updateProgress() {
-        if (!isFinite(video.duration)) return;
-        const percent = (video.currentTime / video.duration) * 100;
-        if (progressFilled) progressFilled.style.width = percent + '%';
-        if (progressHandle) progressHandle.style.left = percent + '%';
-        if (currentTimeSpan) currentTimeSpan.textContent = formatTime(video.currentTime);
-    }
-    video.addEventListener('timeupdate', updateProgress);
-    video.addEventListener('loadedmetadata', () => {
-        if (durationSpan) durationSpan.textContent = formatTime(video.duration);
-        updateProgress();
-    });
-    if (progressBar) progressBar.addEventListener('click', e => {
+    /* ================= PROGRESS BAR ================= */
+    function setVideoTimeFromEvent(clientX) {
         if (!isFinite(video.duration)) return;
         const rect = progressBar.getBoundingClientRect();
-        const pos = (e.clientX - rect.left) / rect.width;
+        let pos = (clientX - rect.left) / rect.width;
+        pos = Math.min(Math.max(pos, 0), 1);
         video.currentTime = pos * video.duration;
+        updateProgressUI();
+    }
+
+    video.addEventListener('loadedmetadata', () => {
+        if (durationSpan) durationSpan.textContent = formatTime(video.duration);
+        updateProgressUI();
     });
+    video.addEventListener('timeupdate', updateProgressUI);
+
+    if (progressBar) {
+        // Клик по полосе
+        progressBar.addEventListener('click', (e) => {
+            const clientX = e.clientX || (e.touches && e.touches[0]?.clientX);
+            setVideoTimeFromEvent(clientX);
+            showControlsTemporarily();
+        });
+
+        // Drag
+        const startDrag = (e) => {
+            e.preventDefault();
+            isDragging = true;
+            const clientX = e.clientX || (e.touches && e.touches[0]?.clientX);
+            if (clientX) setVideoTimeFromEvent(clientX);
+        };
+        const onDrag = (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const clientX = e.clientX || (e.touches && e.touches[0]?.clientX);
+            if (clientX) setVideoTimeFromEvent(clientX);
+            showControlsTemporarily();
+        };
+        const stopDrag = () => { isDragging = false; };
+
+        // Mouse
+        progressBar.addEventListener('mousedown', startDrag);
+        document.addEventListener('mousemove', onDrag);
+        document.addEventListener('mouseup', stopDrag);
+
+        // Touch
+        progressBar.addEventListener('touchstart', startDrag);
+        document.addEventListener('touchmove', onDrag);
+        document.addEventListener('touchend', stopDrag);
+
+        // Hover time
+        let hoverTimeout;
+        progressBar.addEventListener('mousemove', (e) => {
+            if (isDragging) return;
+            const rect = progressBar.getBoundingClientRect();
+            let pos = (e.clientX - rect.left) / rect.width;
+            pos = Math.min(Math.max(pos, 0), 1);
+            const hoverTime = pos * video.duration;
+            if (currentTimeSpan) {
+                currentTimeSpan.textContent = formatTime(hoverTime);
+                currentTimeSpan.style.opacity = '0.7';
+            }
+            if (hoverTimeout) clearTimeout(hoverTimeout);
+            hoverTimeout = setTimeout(() => {
+                if (currentTimeSpan && !isDragging) {
+                    currentTimeSpan.textContent = formatTime(video.currentTime);
+                    currentTimeSpan.style.opacity = '1';
+                }
+            }, 500);
+        });
+        progressBar.addEventListener('mouseleave', () => {
+            if (currentTimeSpan && !isDragging) {
+                currentTimeSpan.textContent = formatTime(video.currentTime);
+                currentTimeSpan.style.opacity = '1';
+            }
+        });
+    }
 
     /* ================= VOLUME ================= */
     function updateMuteIcon() {
@@ -104,31 +187,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     if (volumeSlider) {
+        volumeSlider.value = video.volume;
         volumeSlider.addEventListener('input', function() {
-            video.volume = parseFloat(this.value); video.muted = false; updateMuteIcon();
-        });
-        // колесо мыши по всей области блока громкости
-        const volumeArea = muteBtn.parentElement;
-        volumeArea.addEventListener('wheel', e => {
-            e.preventDefault();
-            let delta = e.deltaY < 0 ? 0.05 : -0.05;
-            video.volume = Math.min(1, Math.max(0, video.volume + delta));
-            volumeSlider.value = video.volume;
-            video.muted = video.volume === 0;
+            video.volume = parseFloat(this.value);
+            video.muted = false;
             updateMuteIcon();
         });
     }
     if (muteBtn) {
         muteBtn.addEventListener('click', () => {
-            video.muted = !video.muted;
+            if (video.muted) {
+                video.muted = false;
+                video.volume = savedVolume || 1;
+            } else {
+                savedVolume = video.volume;
+                video.muted = true;
+                video.volume = 0;
+            }
             if (volumeSlider) volumeSlider.value = video.muted ? 0 : video.volume;
             updateMuteIcon();
         });
     }
     updateMuteIcon();
 
+    // Колесо мыши для громкости на контейнере
+    videoContainer.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        let delta = e.deltaY < 0 ? 0.05 : -0.05;
+        video.volume = Math.min(1, Math.max(0, video.volume + delta));
+        video.muted = false;
+        if (volumeSlider) volumeSlider.value = video.volume;
+        updateMuteIcon();
+    }, { passive: false });
+
     /* ================= SPEED ================= */
-    if (speedBtn) speedBtn.addEventListener('click', e => { e.stopPropagation(); speedMenu?.classList.toggle('hidden'); });
+    if (speedBtn) speedBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        speedMenu?.classList.toggle('hidden');
+    });
     if (speedMenu) {
         document.querySelectorAll('.speed-option').forEach(option => {
             option.addEventListener('click', function() {
@@ -141,14 +237,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-    document.addEventListener('click', e => {
-        if (speedBtn && speedMenu && !speedBtn.contains(e.target) && !speedMenu.contains(e.target)) speedMenu.classList.add('hidden');
+    document.addEventListener('click', (e) => {
+        if (speedBtn && speedMenu && !speedBtn.contains(e.target) && !speedMenu.contains(e.target)) {
+            speedMenu.classList.add('hidden');
+        }
     });
 
-    /* ================= FULLSCREEN ICON ================= */
+    /* ================= FULLSCREEN ================= */
     if (fullscreenBtn) {
         fullscreenBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) videoContainer.requestFullscreen();
+            if (!document.fullscreenElement) videoContainer?.requestFullscreen();
             else document.exitFullscreen();
         });
     }
@@ -165,45 +263,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    /* ================= AUTOSHOW / HIDE CONTROLS ================= */
+    /* ================= AUTO-HIDE CONTROLS ================= */
     let hideTimeout;
-    function showControls() {
+    function showControlsTemporarily() {
         if (!videoControls) return;
-        videoControls.style.opacity = 1;
+        videoControls.style.opacity = '1';
         videoControls.style.pointerEvents = 'auto';
         clearTimeout(hideTimeout);
-        hideTimeout = setTimeout(() => {
-            if (!video.paused) { 
-                videoControls.style.opacity = 0; 
-                videoControls.style.pointerEvents = 'none'; 
-            }
-        }, 1000); // автоскрытие 1 сек
+        if (!video.paused) {
+            hideTimeout = setTimeout(() => {
+                videoControls.style.opacity = '0';
+                videoControls.style.pointerEvents = 'none';
+            }, 1000);
+        }
     }
-    video.addEventListener('mousemove', showControls);
-    video.addEventListener('touchstart', showControls);
-    showControls();
+    function resetHideTimer() {
+        if (video.paused) return;
+        showControlsTemporarily();
+    }
+    videoContainer.addEventListener('mousemove', resetHideTimer);
+    videoContainer.addEventListener('touchstart', resetHideTimer);
+    showControlsTemporarily();
 
-    /* ================= DOUBLE TAP ================= */
+    /* ================= DOUBLE TAP FULLSCREEN ================= */
     let lastTap = 0;
-    video.addEventListener('click', e => {
+    video.addEventListener('click', (e) => {
         const currentTime = new Date().getTime();
         const tapLength = currentTime - lastTap;
         if (tapLength < 300 && tapLength > 0) {
-            // только fullscreen по двойному тапу
-            if (!document.fullscreenElement) videoContainer.requestFullscreen();
+            e.preventDefault();
+            if (!document.fullscreenElement) videoContainer?.requestFullscreen();
             else document.exitFullscreen();
         }
         lastTap = currentTime;
     });
 
-    /* ================= SHOW SEEK TIME ================= */
-    // Показываем текущий hover-time прямо в прогресс-бара через title заменяем на display: можно потом overlay
-    progressBar.addEventListener('mousemove', e => {
-        if (!isFinite(video.duration)) return;
-        const rect = progressBar.getBoundingClientRect();
-        const pos = (e.clientX - rect.left) / rect.width;
-        const hoverTime = pos * video.duration;
-        currentTimeSpan.textContent = formatTime(hoverTime); // временно отображаем hover в currentTime
+    /* ================= VERTICAL VIDEO ================= */
+    video.addEventListener('loadedmetadata', () => {
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
+        if (videoWidth && videoHeight && videoHeight > videoWidth) {
+            video.style.objectFit = 'contain';
+        } else {
+            video.style.objectFit = 'cover';
+        }
     });
-    progressBar.addEventListener('mouseleave', updateProgress);
 });

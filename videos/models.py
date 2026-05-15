@@ -87,9 +87,14 @@ class Video(models.Model):
                 seek_time = '00:00:00'
             
             result = subprocess.run(
-                ['ffmpeg', '-i', self.video_file.path, '-ss', seek_time, '-vframes', '1', 
-                 '-q:v', '2', '-vf', 'scale=640:360:force_original_aspect_ratio=increase,crop=640:360', 
-                 temp_path, '-y'],
+                [
+                    'ffmpeg', '-i', self.video_file.path,
+                    '-ss', seek_time,           # кадр на 1 секунде
+                    '-vframes', '1',            # один кадр
+                    '-q:v', '2',                # качество
+                    '-vf', 'scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080',  # FullHD 16:9
+                    temp_path, '-y'
+                ],
                 capture_output=True,
                 text=True
             )

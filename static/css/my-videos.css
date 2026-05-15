@@ -171,4 +171,20 @@
     .my-videos-page {
         padding: 0 8px;
     }
+    .sort-menu {
+        min-width: 100%; /* растянуть под кнопку */
+        right: 0;
+        left: 0;
+    }
+    
+    .sort-dropdown {
+        min-width: 100%; /* растянуть под кнопку */
+        right: 0;
+        left: 0;
+    }
+
+    .sort-btn {
+        width: 100%; /* кнопка занимает всю ширину */
+        text-align: center;
+    }
 }

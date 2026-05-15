@@ -651,11 +651,16 @@
     .sort-dropdown {
         width: 100%;
     }
+
+    .dropdown-menu.show {
+        width: 100%;
+    }
     
     .sort-dropdown .btn {
         width: 100%;
         min-width: auto;
     }
+
     
     .pagination {
         gap: 10px;

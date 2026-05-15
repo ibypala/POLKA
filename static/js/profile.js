@@ -9,10 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const bioTrigger = document.querySelector('.bio-trigger');
     
     if (bioTrigger) {
-        console.log('bioTrigger найден'); // Для отладки
         
         bioTrigger.addEventListener('click', function(e) {
-            console.log('Клик по bio-trigger'); // Для отладки
             const d = e.currentTarget.dataset;
             
             content.innerHTML = `

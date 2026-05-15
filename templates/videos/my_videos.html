@@ -85,27 +85,4 @@
 
 {% block extra_js %}
     <script src="{% static 'js/my-videos.js' %}"></script>
-    <script>
-        // Дропдаун сортировки
-        document.addEventListener('DOMContentLoaded', function() {
-            const sortBtn = document.getElementById('sortBtn');
-            const sortMenu = document.getElementById('sortMenu');
-            
-            if (sortBtn && sortMenu) {
-                sortBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const expanded = sortBtn.getAttribute('aria-expanded') === 'true';
-                    sortBtn.setAttribute('aria-expanded', !expanded);
-                    sortMenu.classList.toggle('open');
-                });
-                
-                document.addEventListener('click', function(e) {
-                    if (!sortBtn.contains(e.target) && !sortMenu.contains(e.target)) {
-                        sortBtn.setAttribute('aria-expanded', 'false');
-                        sortMenu.classList.remove('open');
-                    }
-                });
-            }
-        });
-    </script>
 {% endblock %}

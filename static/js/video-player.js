@@ -202,10 +202,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ================= FULLSCREEN =================
-    if(fullscreenBtn) fullscreenBtn.addEventListener('click', ()=>{
-        if(!document.fullscreenElement) videoContainer?.requestFullscreen();
-        else document.exitFullscreen();
-    });
+    if(fullscreenBtn){
+        const toggleFullscreen = (e)=>{
+            e.preventDefault(); // обязательно, чтобы iOS не игнорировал
+            e.stopPropagation();
+            if(!document.fullscreenElement) videoContainer?.requestFullscreen();
+            else document.exitFullscreen();
+        };
+        
+        fullscreenBtn.addEventListener('click', toggleFullscreen);      // для десктопа
+        fullscreenBtn.addEventListener('touchend', toggleFullscreen);   // для iPhone/iPad
+    }
+    
 
     // ================= CONTROLS & CURSOR =================
     function showControls(){ if(!videoControls) return; videoControls.style.opacity='1'; videoControls.style.pointerEvents='auto'; videoContainer.style.cursor='default'; clearTimeout(hideTimeout);}

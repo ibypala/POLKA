@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="upload-page">
-    <!-- Карточка с рекомендациями - ТЕПЕРЬ СВЕРХУ -->
+    <!-- Карточка с рекомендациями -->
     <div class="tips-card">
         <h5>
             <i class="fas fa-lightbulb" style="color: var(--accent);"></i>
@@ -40,19 +40,20 @@
                 
                 <!-- Название видео -->
                 <div class="form-group">
-                    <label class="form-label">Название видео</label>
+                    <label class="form-label" for="id_title">Название видео</label>
                     <input type="text" 
                            name="title" 
                            id="id_title"
                            class="form-control" 
                            placeholder="Введите название видео"
                            autocomplete="off"
-                           required>
+                           required
+                           aria-required="true">
                 </div>
                 
                 <!-- Описание -->
                 <div class="form-group">
-                    <label class="form-label">Описание</label>
+                    <label class="form-label" for="id_description">Описание</label>
                     <textarea name="description" 
                               id="id_description"
                               class="form-control" 
@@ -60,9 +61,9 @@
                               placeholder="Введите описание видео (необязательно)"></textarea>
                 </div>
                 
-                <!-- Видео файл - красивая кнопка -->
+                <!-- Видео файл -->
                 <div class="form-group">
-                    <label class="form-label">Видео файл</label>
+                    <label class="form-label" for="id_video_file">Видео файл</label>
                     <div class="file-input-wrapper" id="videoFileWrapper">
                         <span class="file-input-button">
                             <i class="fas fa-cloud-upload-alt"></i>
@@ -75,13 +76,14 @@
                                name="video_file" 
                                id="id_video_file"
                                accept=".mp4,.mov,.avi,.mkv,.webm"
-                               required>
+                               required
+                               aria-required="true">
                     </div>
                 </div>
                 
-                <!-- Превью - красивая кнопка -->
+                <!-- Превью -->
                 <div class="form-group">
-                    <label class="form-label">Превью (необязательно)</label>
+                    <label class="form-label" for="id_thumbnail">Превью (необязательно)</label>
                     <div class="file-input-wrapper" id="thumbnailFileWrapper">
                         <span class="file-input-button">
                             <i class="fas fa-image"></i>
@@ -101,7 +103,7 @@
                 <div class="preview-container" id="previewContainer" style="display: none;">
                     <span class="preview-label">Предпросмотр превью</span>
                     <div class="preview-box">
-                        <img id="thumbnailPreview" class="preview-image">
+                        <img id="thumbnailPreview" class="preview-image" alt="Предпросмотр">
                     </div>
                 </div>
                 

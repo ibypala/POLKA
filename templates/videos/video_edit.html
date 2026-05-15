@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/video-edit.css' %}">
 {% endblock %}
@@ -32,21 +31,18 @@
             <form method="post" enctype="multipart/form-data" class="edit-form" id="editForm">
                 {% csrf_token %}
 
-                <!-- Название видео -->
                 <div class="form-group">
-                    <label>Название видео</label>
+                    <label for="id_title">Название видео</label>
                     <input type="text" name="title" id="id_title" class="form-control" value="{{ video.title }}" required>
                 </div>
 
-                <!-- Описание -->
                 <div class="form-group">
-                    <label>Описание</label>
+                    <label for="id_description">Описание</label>
                     <textarea name="description" id="id_description" class="form-control" rows="5">{{ video.description }}</textarea>
                 </div>
 
-                <!-- Превью (красивая кнопка) -->
                 <div class="form-group">
-                    <label>Новое превью (необязательно)</label>
+                    <label for="id_thumbnail">Новое превью (необязательно)</label>
                     <div class="file-input-wrapper">
                         <span class="file-input-button">
                             <i class="fas fa-image"></i>
@@ -58,7 +54,6 @@
                     <div class="help-text">JPG, PNG. Максимум 5MB</div>
                 </div>
 
-                <!-- Текущее превью -->
                 <div class="form-group">
                     <label>Текущее превью</label>
                     <div class="current-preview">
@@ -70,35 +65,30 @@
                     </div>
                 </div>
 
-                <!-- Новое превью (предпросмотр) -->
                 <div class="form-group" id="newPreviewContainer" style="display: none;">
                     <label>Новое превью</label>
                     <div class="new-preview">
-                        <img id="thumbnailPreview" class="preview-img">
+                        <img id="thumbnailPreview" class="preview-img" alt="Новое превью">
                     </div>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn-save">
-                        Сохранить изменения
-                    </button>
-                    <button type="button" class="btn-delete" id="deleteBtn">
-                        Удалить видео
-                    </button>
+                    <button type="submit" class="btn-save">Сохранить изменения</button>
+                    <button type="button" class="btn-delete" id="deleteBtn">Удалить видео</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- Модалка удаления -->
+<!-- Модалка удаления - ИСПРАВЛЕНА -->
 <div class="modal-overlay" id="deleteModal">
     <div class="modal-content">
         <h3>Удалить видео?</h3>
         <p class="warning-text">Это действие нельзя отменить!</p>
         <div class="modal-actions">
             <button class="btn-cancel-modal" id="cancelDelete">Отмена</button>
-            <form method="post" action="{% url 'video_delete' video.pk %}">
+            <form method="post" action="{% url 'video_delete' video.pk %}" id="deleteForm">
                 {% csrf_token %}
                 <button type="submit" class="btn-delete-modal">Да, удалить</button>
             </form>
@@ -108,5 +98,27 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/video-edit.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteBtn = document.getElementById('deleteBtn');
+    const deleteModal = document.getElementById('deleteModal');
+    const cancelDelete = document.getElementById('cancelDelete');
+    
+    if (deleteBtn && deleteModal) {
+        deleteBtn.addEventListener('click', function() {
+            deleteModal.classList.add('show');
+        });
+        
+        cancelDelete.addEventListener('click', function() {
+            deleteModal.classList.remove('show');
+        });
+        
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === deleteModal) {
+                deleteModal.classList.remove('show');
+            }
+        });
+    }
+});
+</script>
 {% endblock %}

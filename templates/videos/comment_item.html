@@ -1,153 +1,65 @@
 {% load static %}
 
-<div class="comment-item" id="comment-{{ comment.pk }}">
+<div class="comment-item" id="comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}">
 
     <!-- AVATAR -->
-
-    <a
-        href="{% url 'profile' comment.user.username %}"
-        class="comment-avatar-link">
-
+    <a href="{% url 'profile' comment.user.username %}" class="comment-avatar-link" aria-label="{{ comment.user.username }}">
         <div class="comment-avatar">
-
             {% if comment.user.profile.avatar %}
-                <img
-                    src="{{ comment.user.profile.avatar.url }}"
-                    alt="{{ comment.user.username }}">
+                <img src="{{ comment.user.profile.avatar.url }}" alt="{{ comment.user.username }}">
             {% else %}
-                <div class="default-avatar">
-                    {{ comment.user.username|first|upper }}
-                </div>
+                <div class="default-avatar">{{ comment.user.username|first|upper }}</div>
             {% endif %}
-
         </div>
-
     </a>
 
     <!-- CONTENT -->
-
     <div class="comment-body">
-
         <div class="comment-content">
-
-            <!-- HEADER -->
-
             <div class="comment-header">
-
-                <a
-                    href="{% url 'profile' comment.user.username %}"
-                    class="comment-author-link">
-
+                <a href="{% url 'profile' comment.user.username %}" class="comment-author-link">
                     <span class="comment-author">
-
                         {% if comment.user.first_name or comment.user.last_name %}
                             {{ comment.user.first_name }} {{ comment.user.last_name }}
                         {% else %}
                             {{ comment.user.username }}
                         {% endif %}
-
                     </span>
-
                 </a>
-
-                <span class="comment-date">
-                    {{ comment.created_at|timesince }} назад
-                </span>
-
+                <span class="comment-date">{{ comment.created_at|timesince }} назад</span>
             </div>
 
-            <!-- TEXT -->
-
-            <div class="comment-text">
-                {{ comment.text|linebreaks }}
-            </div>
-
-            <!-- ACTIONS -->
+            <div class="comment-text">{{ comment.text|linebreaks }}</div>
 
             <div class="comment-actions">
-
                 {% if user.is_authenticated %}
-                    <button
-                        class="reply-btn"
-                        data-comment-id="{{ comment.pk }}">
-
-                        Ответить
-
-                    </button>
+                    <button class="reply-btn" data-comment-id="{{ comment.pk }}" aria-label="Ответить">Ответить</button>
                 {% endif %}
-
                 {% if user == comment.user or user.is_staff %}
-                    <button
-                        class="delete-comment-btn"
-                        data-comment-id="{{ comment.pk }}">
-
-                        Удалить
-
-                    </button>
+                    <button class="delete-comment-btn" data-comment-id="{{ comment.pk }}" aria-label="Удалить комментарий">Удалить</button>
                 {% endif %}
-
             </div>
-
         </div>
 
         <!-- REPLY FORM -->
-
-        <div
-            class="reply-form-container hidden"
-            id="reply-form-{{ comment.pk }}">
-
-            <form
-                class="reply-form"
-                data-parent-id="{{ comment.pk }}">
-
+        <div class="reply-form-container hidden" id="reply-form-{{ comment.pk }}">
+            <form class="reply-form" data-parent-id="{{ comment.pk }}">
                 {% csrf_token %}
-
-                <textarea
-                    name="text"
-                    rows="2"
-                    placeholder="Напишите ответ..."
-                    required></textarea>
-
+                <textarea name="text" rows="2" placeholder="Напишите ответ..." required aria-label="Текст ответа"></textarea>
                 <div class="reply-form-actions">
-
-                    <button
-                        type="submit"
-                        class="btn-submit"
-                        disabled>
-
-                        Ответить
-
-                    </button>
-
-                    <button
-                        type="button"
-                        class="btn-cancel"
-                        data-comment-id="{{ comment.pk }}">
-
-                        Отмена
-
-                    </button>
-
+                    <button type="submit" class="btn-submit" disabled>Ответить</button>
+                    <button type="button" class="btn-cancel" data-comment-id="{{ comment.pk }}" aria-label="Отмена">Отмена</button>
                 </div>
-
             </form>
-
         </div>
 
         <!-- REPLIES -->
-
         {% if comment.replies.all %}
-
             <div class="comment-replies">
-
                 {% for reply in comment.replies.all %}
                     {% include 'videos/comment_item.html' with comment=reply %}
                 {% endfor %}
-
             </div>
-
         {% endif %}
-
     </div>
-
 </div>

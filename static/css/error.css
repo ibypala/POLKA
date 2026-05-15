@@ -5,20 +5,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px;
 }
 
 .error-card {
     max-width: 500px;
     width: 100%;
     margin: 0 auto;
-    border: none;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    border-radius: 16px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
+    border-radius: 28px;
     overflow: hidden;
+    box-shadow: var(--shadow-glass);
 }
 
 .error-card .card-header {
-    padding: 20px;
+    padding: 24px 20px;
     border-bottom: none;
 }
 
@@ -30,66 +33,100 @@
     margin: 0;
     color: white;
     font-weight: 600;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .error-card .card-body {
-    padding: 30px;
+    padding: 24px;
 }
 
 .error-message {
-    font-size: 1.2rem;
-    color: #030303;
+    font-size: 1.1rem;
+    color: var(--text-primary);
     margin-bottom: 20px;
     line-height: 1.5;
 }
 
 .error-links {
     margin: 20px 0;
-    color: #606060;
+    color: var(--text-secondary);
 }
 
 .error-links a {
-    color: #065fd4;
+    color: var(--accent);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
 }
 
 .error-links a:hover {
-    color: #0b4fa5;
+    color: var(--accent-hover);
     text-decoration: underline;
 }
 
 .error-btn {
     display: inline-block;
-    padding: 12px 30px;
-    background: #065fd4;
+    padding: 12px 28px;
+    background: var(--accent);
     color: white !important;
     text-decoration: none;
-    border-radius: 25px;
+    border-radius: 40px;
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: all 0.2s;
     border: none;
     cursor: pointer;
     margin-top: 10px;
+    text-align: center;
 }
 
 .error-btn:hover {
-    background: #0b4fa5;
+    background: var(--accent-hover);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(6, 95, 212, 0.3);
+    box-shadow: var(--shadow);
     text-decoration: none !important;
 }
 
-/* Адаптивность */
+/* Мобильная адаптивность */
 @media (max-width: 768px) {
+    .error-page {
+        padding: 16px;
+    }
+    
+    .error-card .card-header {
+        padding: 20px 16px;
+    }
+    
+    .error-card .card-header h3 {
+        font-size: 1.2rem;
+    }
+    
     .error-card .card-body {
         padding: 20px;
     }
     
     .error-message {
-        font-size: 1.1rem;
+        font-size: 1rem;
+    }
+    
+    .error-btn {
+        padding: 10px 24px;
+        font-size: 0.9rem;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .error-card {
+        border-radius: 24px;
+    }
+    
+    .error-card .card-header {
+        padding: 16px 12px;
+    }
+    
+    .error-card .card-body {
+        padding: 16px;
     }
 }

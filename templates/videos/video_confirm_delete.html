@@ -1,15 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/confirm-delete.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="delete-page">
-    <div class="delete-card card">
-        <div class="card-header bg-danger">
+    <div class="delete-card">
+        <div class="card-header">
             <h3>⚠️ Подтверждение удаления</h3>
         </div>
         <div class="card-body">
@@ -24,11 +23,12 @@
             
             <form method="post" class="delete-form">
                 {% csrf_token %}
-                <button type="submit" class="delete-btn delete-btn-danger">
+                <button type="submit" class="delete-btn delete-btn-danger" aria-label="Подтвердить удаление">
                     Да, удалить
                 </button>
                 <a href="{% url 'video_detail' video.pk %}" 
-                   class="delete-btn delete-btn-secondary">
+                   class="delete-btn delete-btn-secondary"
+                   aria-label="Отмена">
                     Отмена
                 </a>
             </form>

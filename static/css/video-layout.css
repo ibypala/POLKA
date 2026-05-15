@@ -2,8 +2,10 @@
 
 .video-detail-page {
     margin: 0 auto;
-    padding: 24px 20px; /* 20px слева и справа */
+    padding: 16px 16px;
     width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .video-page {
@@ -15,7 +17,8 @@
 .video-main {
     flex: 1;
     min-width: 0;
-    padding-left: 25px;
+    /* Убираем padding-left - он создает проблему */
+    padding-left: 0;
 }
 
 .video-sidebar {
@@ -50,34 +53,84 @@
     width: 100%;
 }
 
-/* Адаптивность */
+/* ========== АДАПТИВНОСТЬ ========== */
+
+/* Планшеты и меньше */
 @media (max-width: 992px) {
     .video-page {
         flex-direction: column;
-        gap: 16px;
+        gap: 20px;
     }
     
     .video-sidebar {
         width: 100%;
     }
+    
+    .video-main {
+        padding-left: 0;
+    }
 }
 
+/* Мобильные устройства */
 @media (max-width: 768px) {
     .video-detail-page {
-        padding: 16px 12px; /* 12px слева и справа */
+        padding: 12px 10px;
     }
     
     .video-info-block {
-        padding: 16px;
+        padding: 14px;
+    }
+    
+    .video-info-block .video-title {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
     }
     
     .comments-section {
-        margin-top: 16px;
+        margin-top: 20px;
     }
 }
 
+/* Маленькие мобильные */
 @media (max-width: 480px) {
     .video-detail-page {
-        padding: 12px 8px; /* 8px слева и справа */
+        padding: 8px 8px;
+    }
+    
+    .video-info-block {
+        padding: 12px;
+        border-radius: 12px;
+    }
+    
+    .video-info-block .video-title {
+        font-size: 1.1rem;
+    }
+    
+    .video-actions-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .like-dislike-block {
+        width: 100%;
+    }
+    
+    .like-button,
+    .dislike-button {
+        flex: 1;
+        justify-content: center;
+        padding: 8px 12px;
+    }
+}
+
+/* Очень маленькие (до 360px) */
+@media (max-width: 360px) {
+    .video-detail-page {
+        padding: 6px 6px;
+    }
+    
+    .video-info-block {
+        padding: 10px;
     }
 }

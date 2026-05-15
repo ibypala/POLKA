@@ -3,7 +3,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#007aff">
     <title>{% block title %}POLKA{% endblock %}</title>
     <link 
         rel="icon" 
@@ -21,7 +22,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Наши CSS файлы -->
-
     <link rel="stylesheet" href="{% static 'css/theme.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% block extra_css %}{% endblock %}
@@ -36,7 +36,6 @@
                     alt="POLKA"
                     class="logo-img logo-light"
                 >
-
                 <img 
                     src="{% static 'img/logo-dark.png' %}" 
                     alt="POLKA"
@@ -54,7 +53,7 @@
                     
                     <!-- Аватар с выпадающим меню -->
                     <div class="user-menu">
-                        <button class="user-menu-btn" id="userMenuBtn">
+                        <button class="user-menu-btn" id="userMenuBtn" aria-label="Меню пользователя">
                             {% if user.profile.avatar %}
                                 <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="user-avatar">
                             {% else %}
@@ -68,7 +67,7 @@
                         <div class="user-dropdown" id="userDropdown">
                             <div class="user-info">
                                 <div class="user-name">{{ user.username }}</div>
-                                <div class="user-email">{{ user.email}}</div>
+                                <div class="user-email">{{ user.email }}</div>
                             </div>
                             <div class="dropdown-divider"></div>
                             <a href="{% url 'profile' user.username %}" class="dropdown-item">
@@ -101,7 +100,7 @@
                     <a href="{% url 'register' %}" class="nav-link register-link">Регистрация</a>
                     
                     <!-- Кнопка темы для гостя -->
-                    <button class="theme-toggle" id="themeToggleGuest" title="Сменить тему">
+                    <button class="theme-toggle" id="themeToggleGuest" title="Сменить тему" aria-label="Сменить тему">
                         <i class="fas fa-sun"></i>
                         <i class="fas fa-moon"></i>
                     </button>
@@ -112,9 +111,6 @@
 
     <!-- Основной контент -->
     <main class="main-content">
-        
-        
-        <!-- УБИРАЕМ page-container - теперь каждая страница сама управляет отступами -->
         {% block content %}{% endblock %}
     </main>
 

@@ -1,34 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/error.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="error-page">
-    <div class="col-md-6">
-        <div class="error-card card">
-            <div class="card-header bg-warning">
-                <h3>⛔ Доступ запрещен (403)</h3>
+    <div class="error-card">
+        <div class="card-header bg-warning">
+            <h3>⛔ Доступ запрещен (403)</h3>
+        </div>
+        <div class="card-body">
+            <p class="error-message">У вас нет прав для просмотра этой страницы.</p>
+            
+            <div class="error-links">
+                <p>Пожалуйста, 
+                    <a href="{% url 'login' %}">войдите</a> 
+                    или 
+                    <a href="{% url 'register' %}">зарегистрируйтесь</a> 
+                    с соответствующими правами.
+                </p>
             </div>
-            <div class="card-body">
-                <p class="error-message">У вас нет прав для просмотра этой страницы.</p>
-                
-                <div class="error-links">
-                    <p>Пожалуйста, 
-                        <a href="{% url 'login' %}">войдите</a> 
-                        или 
-                        <a href="{% url 'register' %}">зарегистрируйтесь</a> 
-                        с соответствующими правами.
-                    </p>
-                </div>
-                
-                <a href="{% url 'video_list' %}" class="error-btn">
-                    ← Вернуться на главную
-                </a>
-            </div>
+            
+            <a href="{% url 'video_list' %}" class="error-btn">
+                ← Вернуться на главную
+            </a>
         </div>
     </div>
 </div>

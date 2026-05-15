@@ -14,8 +14,8 @@
     --nav-bg: rgba(245, 245, 247, 0.9);
     --wood: #e5d5c5;
     --hover-bg: rgba(0, 0, 0, 0.05);
-    --bg-glass: rgba(255, 255, 255, 0.5);      /* Менее прозрачное */
-    --bg-glass-light: rgba(255, 255, 255, 0.3); /* Более прозрачное */
+    --bg-glass: rgba(255, 255, 255, 0.5);
+    --bg-glass-light: rgba(255, 255, 255, 0.3);
     --bg-glass-dark: rgba(44, 44, 46, 0.5);
     --card-border: rgba(255, 255, 255, 0.3);
     --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -36,8 +36,8 @@
     --wood: #5c4e3d;
     --wood-dark: #3a3025;
     --hover-bg: rgba(255, 255, 255, 0.05);
-    --bg-glass: rgba(44, 44, 46, 0.7);      /* Более темное для темной темы */
-    --bg-glass-light: rgba(44, 44, 46, 0.5); /* Более прозрачное для темной темы */
+    --bg-glass: rgba(44, 44, 46, 0.7);
+    --bg-glass-light: rgba(44, 44, 46, 0.5);
     --card-border: rgba(255, 255, 255, 0.1);
     --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
@@ -54,6 +54,16 @@ body {
     color: var(--text-primary);
     transition: background-color 0.2s ease, color 0.2s ease;
     line-height: 1.5;
+    font-size: 16px; /* Базовый шрифт - не меньше 16px на мобильных */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Уменьшаем базовый шрифт только на десктопе */
+@media (min-width: 768px) {
+    body {
+        font-size: 15px;
+    }
 }
 
 /* Навигация */
@@ -68,7 +78,7 @@ body {
 
     background: var(--nav-bg);
     backdrop-filter: blur(15px);
-    
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .nav-container {
@@ -95,7 +105,6 @@ body {
 }
 
 /* Кнопка создания */
-
 .create-btn {
     display: flex;
     align-items: center;
@@ -358,11 +367,71 @@ body {
     width: 100%;
     max-width: 100%;
     margin: 0;
-    padding: 0; /* Убираем все отступы */
+    padding: 0;
 }
 
 .page-container {
     max-width: none;
     margin: 0;
     padding: 0;
+}
+
+/* ========== МОБИЛЬНЫЕ СТИЛИ ДЛЯ NAV ========== */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 6px 12px;
+    }
+    
+    .create-btn span {
+        display: none;
+    }
+    
+    .create-btn {
+        padding: 0 12px;
+        gap: 0;
+    }
+    
+    .create-btn i {
+        font-size: 16px;
+    }
+    
+    .user-menu-btn .menu-text {
+        display: none;
+    }
+    
+    .user-menu-btn {
+        padding: 0;
+    }
+    
+    .user-menu-btn i {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-container {
+        padding: 4px 8px;
+    }
+    
+    .logo {
+        font-size: 18px;
+    }
+    
+    .nav-right {
+        gap: 8px;
+    }
+    
+    .theme-toggle {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .theme-toggle i {
+        font-size: 14px;
+    }
+    
+    .nav-link {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
 }

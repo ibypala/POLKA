@@ -1,15 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/video-card.css' %}">
     <link rel="stylesheet" href="{% static 'css/video-list.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="home-page"> <!-- Добавляем свой класс-обертку -->
+<div class="home-page">
     <div class="page-header">
         <h4>Последние видео</h4>
     </div>
